@@ -13,5 +13,24 @@ class ListNode:
         self.next = next
 
 
-def reverse_k_nodes_of_linklist(head: ListNode) -> ListNode:
-    pass
+def reverse_k_nodes_of_linklist(head: ListNode, k: int) -> ListNode:
+    cnt = 0
+    temp = head
+    dummy = ListNode(0, head)
+    while temp:
+        cnt += 1
+        temp = temp.next
+    if cnt < k:
+        return head
+    group_prev = dummy
+    while cnt >= k:
+        curr = group_prev.next
+        prev = None
+
+        for _ in range(k):
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next 
+        
+    
