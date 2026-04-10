@@ -1,5 +1,7 @@
 import math
 from collections import deque
+
+
 class Node:
     def __init__(self, key):
         self.key = key
@@ -50,7 +52,36 @@ def print_bt_level_line_by_line_v2(root: Node) -> None:
             if node.right is not None:
                 q.append(node.right)
         print()
-        
+
+
+"""
+8) Search in a Binary Search Tree
+
+Topic: Binary Search Tree
+Difficulty: Easy
+Given the root of a BST and a value, return the node where the value exists. 
+If it does not exist, return null.
+"""
+def search_BST_for_node(root: Node, value) -> Node:
+    if root == None:
+        return None
+    if root.key == value:
+        return root
+    elif value < root.key:
+        return search_BST_for_node(root.left, value)
+    else:
+        return search_BST_for_node(root.right, value)
+
+def search_BST_iterative(root: Node, value: int) -> Node | None:
+    curr = root
+    while curr:
+        if curr.key == value:
+            return curr
+        elif curr.key < value:
+             curr = curr.right
+        else:
+            curr = curr.left
+    return None
 
 if __name__ == "__main__":
     root1 = Node(10)
@@ -61,4 +92,5 @@ if __name__ == "__main__":
     root1.left = n1
     root1.right = n2
     n1.left = n3
-    print_bt_level_line_by_line_v2(root1)
+    node_value = search_BST_iterative(root1, 30)
+    print(node_value.key)

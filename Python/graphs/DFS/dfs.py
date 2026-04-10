@@ -101,6 +101,35 @@ def is_cyclic_graph(adj: list[list]) -> bool:
     else:
         print("No cycle found")
 
+"""
+10) Number of Islands
+
+Topic: Graphs
+Difficulty: Medium
+Given a 2D grid of '1's and '0's, count the number of islands. 
+An island is formed by connecting adjacent lands horizontally or vertically.
+"""
+
+def dfs_grid(grid: list[list],r: int, c: int):
+    if r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]) or grid[r][c] == 0:
+        return 
+    grid[r][c] = 0
+    dfs_grid(grid, r + 1, c)
+    dfs_grid(grid, r - 1, c)
+    dfs_grid(grid, r, c + 1)
+    dfs_grid(grid, r, c - 1)
+
+def find_num_islands(grid: list[list]) -> int:
+    row = len(grid)
+    col = len(grid[0])
+    islands = 0
+    for r in range(row):
+        for c in range(col):
+            if grid[r][c] == 1:
+                islands += 1
+                dfs_grid(grid, r, c)
+    return islands
+
 
 if __name__ == "__main__":
     V = 4
@@ -117,3 +146,12 @@ if __name__ == "__main__":
     add_list_of_edges(adj1, [(0,1), (1,2), (2,4), (4,5), (1,3), (2,3)])
 
     is_cyclic_graph(adj1)
+
+    island_grid = [
+        [1, 0, 0, 0, 1],
+        [1, 1, 1 ,0, 0],
+        [0, 0, 1, 1, 0],
+        [1, 1, 1, 0, 0]
+    ]
+    print("---++++++-------")
+    print(find_num_islands(island_grid))
