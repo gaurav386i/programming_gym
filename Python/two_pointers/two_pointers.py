@@ -1,3 +1,8 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
 """
 Given a string s, return true if it can become a palindrome after deleting at 
 most one character, otherwise return false.
@@ -32,10 +37,6 @@ Input: 1 -> 2 -> 3 -> 4 -> 5, n = 2
 Output: 1 -> 2 -> 3 -> 5
 """
 
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
 
 def remove_nth_node_from_ll(head: ListNode, k=2) -> ListNode:
     slow = head
@@ -50,11 +51,47 @@ def remove_nth_node_from_ll(head: ListNode, k=2) -> ListNode:
 
     return head
 
+"""
+3) Move Zeroes
+
+Topic: Array / Two Pointers
+Difficulty: Easy
+Given an integer array, move all 0s to the end while keeping the relative 
+order of non-zero elements. Do this in place.
+"""
+def move_zeroes_to_end(zeroes: list) -> list:
+    j = 0
+
+    for i in range(len(zeroes)):
+        if zeroes[i] != 0:
+            zeroes[j], zeroes[i] = zeroes[i], zeroes[j]
+            j += 1
+    return zeroes
+
+
+"""
+4) Two Sum in a Sorted Array
+
+Topic: Two Pointers
+Difficulty: Easy
+Given a sorted array and a target sum, return the indices of the two numbers 
+such that they add up to the target.
+
+"""
+def two_sum(arr: list, target: int) -> tuple[int, int]:
+    p1 = 0
+    p2 = len(arr) - 1
+    while p1 < p2:
+        if arr[p1] + arr[p2] < target:
+            p1 += 1
+        elif arr[p1] + arr[p2] > target:
+            p2 -= 1
+        elif arr[p1] + arr[p2] == target:
+            return (p1, p2)
+    
 
 
 if __name__ == "__main__":
-    print(remove_one_char_to_make_palindrome("abca"))
-    print(remove_one_char_to_make_palindrome("abcdefa"))
 
     head = ListNode(val=1)
     n1 = ListNode(val=2)
@@ -67,6 +104,8 @@ if __name__ == "__main__":
     n3.next = n4
 
     new_head = remove_nth_node_from_ll(head)
-    while new_head:
-          print(f"--->{new_head.val}", end="")
-          new_head = new_head.next
+    
+    zeroes_arr = [1, 2, 0, 4, 0, 0, 5, 6, 0, 0, 7]
+    sorted_arr = [1, 3, 5 ,7 ,9 , 10]
+    target = 8
+    print(two_sum(sorted_arr, target))

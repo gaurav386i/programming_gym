@@ -1,3 +1,9 @@
+# Sliding windows works like one element removed from windows and 
+# one element is added to the window always keep in mind
+#
+#
+
+
 """
 Given a string s, find the length of the longest substring without repeating 
 characters.
@@ -33,6 +39,41 @@ def longest_substring_without_repeating_char(input: str) -> int:
     """
     return len(input[best_start: best_start + best_length])
 
+"""
+6) Maximum Sum Subarray of Size K
+
+Topic: Sliding Window
+Difficulty: Medium
+Given an array of integers and an integer k, find the maximum sum of any 
+contiguous subarray of size k.
+"""
+
+def max_subarr_sum(arr: list, k: int) -> int:
+    if k <= 0 or k > len(arr):
+        return 0
+    p1 = 0
+    p2 = k
+    window_sum = sum(arr[:p2])
+    max_sum = window_sum
+    while p2 <= len(arr) - 1:
+        
+        window_sum += arr[p2] - arr[p1]
+        max_sum = max(max_sum, window_sum)
+        p2 += 1
+        p1 += 1    
+    return max_sum
+
+def max_subarr_sum_for_loop_v(arr: list, k: int) -> int:
+    if k <= 0 or k > len(arr):
+        return 0
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]
+        max_sum = max(max_sum, window_sum)
+    return max_sum
+
+
 
 """
 Given two strings s and t, return the minimum window in s which contains all 
@@ -45,3 +86,8 @@ Output: "BANC"
 
 if __name__ == "__main__":
     print(longest_substring_without_repeating_char("abcabcbb"))
+
+    sum_arr = [3, 5, 2, 6, 19, 0, 25 , 2, 4, 13]
+    sum_ar1 = [1, 6, -5, -2, -8, 9, -10, 11, -13, 14]
+
+    print(max_subarr_sum_for_loop_v(sum_ar1, 4))
