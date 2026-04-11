@@ -107,7 +107,18 @@ def calculate_sub_array_with_given_sum(l: list, target: int) -> bool:
         if curr == target:
             return True
     return False
+
+def two_sum_idx(arr: list[list], target: int) -> list[int]:
+    u_map = {}
+    for i, num in enumerate(arr):
+        if (target - num) in u_map:
+            return [u_map.get(target - num), i]
+        else:
+            u_map[num] = i
+    return []
+
+
                   
 
 if __name__ == "__main__":
-    print(calculate_sub_array_with_given_sum([1,4,20,3,10,5], 33))
+    print(two_sum_idx([2, 7, 11, 15], 9))

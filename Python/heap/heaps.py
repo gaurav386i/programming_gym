@@ -25,10 +25,19 @@ def top_k_frequent_element(arr: list[int], top_k) -> list[int]:
         resp.append(v)
     return resp
 
+def kth_larget_element_in_an_arr(arr: list[int], kth: int) -> int:
+    if kth <= 0:
+        return 0
+    max_heap = []
+    for num in arr:
+        heappush(max_heap, -num)
+    for _ in range(kth - 1):
+        _ = heappop(max_heap)
+    return -heappop(max_heap)
+    
 
 if __name__ == "__main__":
     elms = [
         1,2,1,2,3,4,4,6,7,1,2,2,3,3,2,1,2,3,54,5,5,6,4,3,5,6,7,6,67,56,34,12,11,12,13,
         ]
-    print(top_k_frequent_element(elms, 4))
-
+    print(kth_larget_element_in_an_arr([3,2,3,1,2,4,5,5,6], 4))

@@ -74,6 +74,27 @@ def max_subarr_sum_for_loop_v(arr: list, k: int) -> int:
     return max_sum
 
 
+def longest_substring_without_repeated_chars(word: str) -> int:
+    """
+    we need best start if we have to return substring without repeated char
+    otherwise if need to just calculate best_len can do.
+    """
+    left = 0
+    best_start = 0
+    last_seen = {}
+    best_len = 0
+    for right,  ch in enumerate(word):
+        if ch in last_seen and last_seen[ch] >= left:
+            left = last_seen[ch] + 1
+        last_seen[ch] = right
+        curr_len = right - left + 1
+
+        if curr_len > best_len:
+            best_len = curr_len
+            best_start = left
+
+    return  len(word[best_start: best_start + best_len])
+
 
 """
 Given two strings s and t, return the minimum window in s which contains all 
@@ -90,4 +111,4 @@ if __name__ == "__main__":
     sum_arr = [3, 5, 2, 6, 19, 0, 25 , 2, 4, 13]
     sum_ar1 = [1, 6, -5, -2, -8, 9, -10, 11, -13, 14]
 
-    print(max_subarr_sum_for_loop_v(sum_ar1, 4))
+    print(longest_substring_without_repeated_chars("abcabcbb"))

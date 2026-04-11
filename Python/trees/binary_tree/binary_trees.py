@@ -1,3 +1,10 @@
+"""
+A valid BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node’s key.
+The right subtree contains only nodes with keys greater than the node’s key.
+Both the left and right subtrees must also be binary search trees.
+"""
 import math
 from collections import deque
 
@@ -83,14 +90,42 @@ def search_BST_iterative(root: Node, value: int) -> Node | None:
             curr = curr.left
     return None
 
+def valid_bst(root: Node) -> bool:
+    if root == None:
+        return False
+    if root.left and root.key < root.left.key:
+        return False
+    elif root.right and root.key > root.right.key:
+        return False
+    elif root.left and root.key > root.left.key:
+        return True
+    elif root.right and root.key < root.right.key:
+        return True
+    else:
+        return valid_bst(root.left) and valid_bst(root.right)
+
+
+def valid_bst_iterative(root: Node) -> bool:
+    curr = root
+    while curr:
+        if not curr.left or not curr.right:
+            return False
+        elif curr.left and curr.key < curr.left.key:
+            return False
+        elif curr.right and curr.key > curr.right.key:
+            return False
+        
+        
+
+
 if __name__ == "__main__":
     root1 = Node(10)
-    n1 = Node(20)
+    n1 = Node(9)
     n2 = Node(30)
     n3 = Node(40)
     
     root1.left = n1
     root1.right = n2
-    n1.left = n3
-    node_value = search_BST_iterative(root1, 30)
-    print(node_value.key)
+    n2.right = n3
+    
+    print(valid_bst(root1))

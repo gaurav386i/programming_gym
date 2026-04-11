@@ -88,7 +88,30 @@ def two_sum(arr: list, target: int) -> tuple[int, int]:
             p2 -= 1
         elif arr[p1] + arr[p2] == target:
             return (p1, p2)
-    
+
+def valid_palindrome_after_lower(sentence: str) -> bool:
+    sentence = sentence.lower()
+    start = 0
+    end = len(sentence) - 1
+    while start < end:
+        if sentence[end] == sentence[start]:
+            start += 1
+            end -= 1
+        else:
+            return False
+
+
+def remove_nth_node_from_end_of_list(head: ListNode, kth: int) -> ListNode:
+    slow = head
+    fast = head
+    for _ in range(kth):
+        fast = fast.next
+    while fast:
+        slow = slow.next
+        fast = fast.next
+    slow.next = slow.next.next
+    return head
+
 
 
 if __name__ == "__main__":
@@ -108,4 +131,6 @@ if __name__ == "__main__":
     zeroes_arr = [1, 2, 0, 4, 0, 0, 5, 6, 0, 0, 7]
     sorted_arr = [1, 3, 5 ,7 ,9 , 10]
     target = 8
-    print(two_sum(sorted_arr, target))
+    # print(two_sum(sorted_arr, target))
+    print(valid_palindrome_after_lower("A man, a plan, a canal: Panama"))
+    print(valid_palindrome_after_lower("race a car"))
