@@ -95,6 +95,34 @@ def longest_substring_without_repeated_chars(word: str) -> int:
 
     return  len(word[best_start: best_start + best_len])
 
+def create_hash_str(st: str) -> dict:
+    u_map = {}
+    for ch in st:
+        u_map[ch] = u_map.get(ch, 0) + 1
+    return u_map
+
+
+def permutation_in_string(s1: str, s2: str) -> bool:
+    n1 = len(s1)
+    n2 = len(s2)
+    if len(s1) > len(s2):
+        return False
+    needed = create_hash_str(s1)
+    window = create_hash_str(s2)
+    if needed == window:
+        return True
+    for i in range(n1, n2):
+        window[s2[i]] += 1
+
+        left_char = s2[i - 1]
+        window[s2[left_char]] -= 1
+        
+        if window[left_char] == 0:
+            del window[left_char]
+        if window == needed:
+            return True
+    return False
+
 
 """
 Given two strings s and t, return the minimum window in s which contains all 

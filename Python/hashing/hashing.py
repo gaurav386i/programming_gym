@@ -117,8 +117,14 @@ def two_sum_idx(arr: list[list], target: int) -> list[int]:
             u_map[num] = i
     return []
 
-
+def contain_duplicates(nums: list[int]) -> bool:
+    u_set = set()
+    for num in nums:
+        if num in u_set:
+            return True
+        u_set.add(num)
+    return False
                   
 
 if __name__ == "__main__":
-    print(two_sum_idx([2, 7, 11, 15], 9))
+    print(contain_duplicates([1,2,3,4]))

@@ -26,5 +26,18 @@ def product_of_all_except_self(arr: list[int]) -> list[int]:
         suffix *= arr[i]
     return result 
 
+def product_of_all_except_self_v2(arr: list[int]) -> list[int]:
+    n = len(arr)
+    prefix = 1
+    result = [1] * n
+    for i in range(n):
+        result[i]  = prefix
+        prefix *= arr[i]
+    suffix = 1
+    for i in range(n):
+        result[i] *= suffix
+        suffix *= arr[i]
+    return result
+
 if __name__ == "__main__":
     print(product_of_all_except_self([1,2,4,6]))

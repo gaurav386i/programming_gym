@@ -112,6 +112,27 @@ def remove_nth_node_from_end_of_list(head: ListNode, kth: int) -> ListNode:
     slow.next = slow.next.next
     return head
 
+def sort_colors(colors: list[int]) -> list[int]:
+    """
+    code logic:
+    init 2 pointers 
+    start = 0 and end = len(colors)
+    run loop and for each color push bigger one in the end:  
+    """
+    if not colors:
+        return colors
+    num_colors = len(set(colors))
+    
+    for i in range(num_colors):
+        start = i
+        end = len(colors) - 1
+        while start < end:
+            if colors[start] > colors[end]:
+                colors[start], colors[end] = colors[end], colors[start]
+            start += 1
+            end -= 1
+    return colors
+
 
 
 if __name__ == "__main__":
@@ -132,5 +153,7 @@ if __name__ == "__main__":
     sorted_arr = [1, 3, 5 ,7 ,9 , 10]
     target = 8
     # print(two_sum(sorted_arr, target))
-    print(valid_palindrome_after_lower("A man, a plan, a canal: Panama"))
-    print(valid_palindrome_after_lower("race a car"))
+    # print(valid_palindrome_after_lower("A man, a plan, a canal: Panama"))
+    # print(valid_palindrome_after_lower("race a car"))
+    nums = [2,0,2,1,1,0]
+    print(sort_colors(nums))

@@ -1,3 +1,4 @@
+from math import sqrt
 from heapq import heappush, heappop
 
 
@@ -34,10 +35,29 @@ def kth_larget_element_in_an_arr(arr: list[int], kth: int) -> int:
     for _ in range(kth - 1):
         _ = heappop(max_heap)
     return -heappop(max_heap)
-    
+
+
+def k_nearest_point_from_origin(
+        arr_of_cor: list[list[int]], 
+        kth: int
+    ) -> list[list[int]]:
+    if not arr_of_cor or kth <= 0:
+        return [[0, 0]]
+    min_heap: list = []
+    resp = []
+    for x, y in arr_of_cor:
+         d = x*x + y*y
+         heappush(min_heap, (d, [x, y])) 
+    for _ in range(min(kth, len(min_heap))):
+        _, cord = heappop(min_heap)
+        resp.append(cord)
+    return resp
 
 if __name__ == "__main__":
     elms = [
         1,2,1,2,3,4,4,6,7,1,2,2,3,3,2,1,2,3,54,5,5,6,4,3,5,6,7,6,67,56,34,12,11,12,13,
         ]
-    print(kth_larget_element_in_an_arr([3,2,3,1,2,4,5,5,6], 4))
+    # print(kth_larget_element_in_an_arr([3,2,3,1,2,4,5,5,6], 4))
+    cordinates = [[3,3],[5,-1],[-2,4]]
+    print(k_nearest_point_from_origin(cordinates, 2))
+

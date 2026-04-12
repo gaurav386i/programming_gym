@@ -25,7 +25,7 @@ def max_in_binary_tree(root: Node) -> int:
             max_in_binary_tree(root.left), 
             max_in_binary_tree(root.right)
             )
-    
+
 def print_level_order_traversal_line_by_line(root: Node) -> None:
     if root is None:
         return
@@ -92,7 +92,7 @@ def search_BST_iterative(root: Node, value: int) -> Node | None:
 
 def valid_bst(root: Node) -> bool:
     if root == None:
-        return False
+        return True
     if root.left and root.key < root.left.key:
         return False
     elif root.right and root.key > root.right.key:
@@ -105,17 +105,32 @@ def valid_bst(root: Node) -> bool:
         return valid_bst(root.left) and valid_bst(root.right)
 
 
-def valid_bst_iterative(root: Node) -> bool:
-    curr = root
-    while curr:
-        if not curr.left or not curr.right:
-            return False
-        elif curr.left and curr.key < curr.left.key:
-            return False
-        elif curr.right and curr.key > curr.right.key:
-            return False
-        
-        
+def are_bsts_same(root1: Node, root2: Node):
+    if root1 is None and root2 is None:
+        return True
+    if root1 is None or root2 is None:
+        return False
+    if root1.key != root2.key:
+        return False
+    else:
+        return are_bsts_same(root1.left, root2.left) and are_bsts_same(
+            root1.right, root2.right
+        )
+
+
+def level_order_traversal(root: Node) -> None:
+    if not root:
+        return None
+    q = deque()
+    q.append(root)
+
+    while len(q) > 0:
+        node = q.popleft()
+        print(node.key, end=" ")
+        if node.left:
+            q.append(node.left)
+        if node.right:
+            q.append(node.right)
 
 
 if __name__ == "__main__":
@@ -128,4 +143,4 @@ if __name__ == "__main__":
     root1.right = n2
     n2.right = n3
     
-    print(valid_bst(root1))
+    print(level_order_traversal(root1))
