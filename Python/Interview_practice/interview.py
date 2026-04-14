@@ -31,31 +31,40 @@ def longest_consecutive_sub_arr(arr: list[int]) -> list[int]:
 
 
 
-def reverse_k_nodes(head: ListNode, kth: int) -> ListNode:
-    if not head:
+def reverse_k_nodes_in_linklist(head: ListNode, kth: int) -> ListNode:
+    if not head or kth <= 1:
         return head
-    temp = head
+    dummy = ListNode(0)
+    dummy.next = head
+    current = head
     count = 0
-    while temp:
+    while current:
         count += 1
-        temp = temp.next
-    dummy = ListNode(0, head)
+        current = current.next
     group_prev = dummy
 
-    while count > kth:
+    while count <= kth:
         curr = group_prev.next
         prev = None
+        next_group_head = curr
         for _ in range(kth):
             nxt = curr.next
             curr.next = prev
             prev = curr
             curr = nxt
-        tail = group_prev.next
-        curr = tail.next
+        
+        tail = next_group_head
         group_prev.next = prev
+        tail.next = curr
+
+        group_prev = tail
 
         count -= kth
     return dummy.next
+
+
+def sub_arr_of_longest_consecutive_int():
+    pass
 
             
 
