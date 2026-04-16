@@ -3,3 +3,31 @@
 *.pyo
 *.pyd
 __pycache__/
+
+# C build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.d
+
+# Debug / profiling artifacts
+*.dSYM/
+*.gcda
+*.gcno
+*.gcov
+gmon.out
+core
+
+# Common generated binaries in your repo
+CLang/**/experiments
+CLang/**/a.out
+
+# macOS noise
+.DS_Store
