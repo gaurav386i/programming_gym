@@ -41,7 +41,8 @@ Implement the `MinStack` class:
 
 Given a binary tree, determine if it is height-balanced.
 
-A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+A height-balanced binary tree is a binary tree in which the depth of the 
+two subtrees of every node never differs by more than one.
 
 ### Example 1
 
@@ -164,7 +165,8 @@ You may not modify the values in the list’s nodes. Only nodes themselves may b
 **Topic:** Searching, Binary Search
 **Difficulty:** Medium
 
-Given an array of integers `nums` sorted in non-decreasing order, find the starting and ending position of a given `target` value.
+Given an array of integers `nums` sorted in non-decreasing order, 
+find the starting and ending position of a given `target` value.
 
 If `target` is not found in the array, return `[-1, -1]`.
 
@@ -226,6 +228,16 @@ Return the minimum number of intervals required to complete all tasks.
 * `0 <= n <= 100`
 
 ---
+"""
+from collections import Counter
+
+def least_interval(tasks: list[str], n: int) -> int:
+    freq = Counter(tasks)
+    max_freq = max(freq.values())
+    count_max = sum(1 for v in freq.values() if v == max_freq)
+
+    return max(len(tasks), (max_freq - 1) * (n + 1) + count_max)
+"""
 
 ## 8) Course Schedule
 
@@ -258,6 +270,36 @@ Return `true` if you can finish all courses. Otherwise, return `false`.
 
 * `1 <= numCourses <= 2000`
 * `0 <= prerequisites.length <= 5000`
+
+"""
+from collections import deque
+
+def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
+    graph = {i: [] for i in range(numCourses)}
+    indegree = [0] * numCourses
+
+    for course, prereq in prerequisites:
+        graph[prereq].append(course)
+        indegree[course] += 1
+
+    queue = deque()
+    for i in range(numCourses):
+        if indegree[i] == 0:
+            queue.append(i)
+
+    completed = 0
+
+    while queue:
+        node = queue.popleft()
+        completed += 1
+
+        for nei in graph[node]:
+            indegree[nei] -= 1
+            if indegree[nei] == 0:
+                queue.append(nei)
+
+    return completed == numCourses
+"""
 
 ---
 
@@ -327,6 +369,21 @@ You must implement an algorithm that runs in `O(n)` time and uses `O(1)` auxilia
 ---
 
 """
+def first_missing_positive(nums: list[int]) -> int:
+    n = len(nums)
+
+    for i in range(n):
+        while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+            correct_idx = nums[i] - 1
+            nums[i], nums[correct_idx] = nums[correct_idx], nums[i]
+
+    for i in range(n):
+        if nums[i] != i + 1:
+            return i + 1
+
+    return n + 1
+
+#+++++++++++
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -352,35 +409,26 @@ Implement the `MinStack` class:
 """
 
 class MinStack:
-    # core logic:
-    # - min_val will be recalculated whenever a new element will be added to stack
-    # constructor : init a empty list, min_val = None | 0
-    # methods/behaviour
-    # push(val) >> append val to self.stack
-    # pop() >> pop top element from self.stack 
-    # top() return top value from self.stack e.g return self.stack[0]
-    # getMin() >> return self.min_val 
     def __init__(self):
-        self.stack: list = []
-        self.min_val: int = 0
+        self.stack = []
+        self.min_stack = []
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        if len(self.stack) > 0:
-            for v in self.stack:
-                self.min_val = min(self.min_val, v)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
 
-    def pop(self) -> int:
-        if len(self.stack) > 0:
-            return self.stack.pop()
-    
+    def pop(self) -> None:
+        if self.stack:
+            val = self.stack.pop()
+            if val == self.min_stack[-1]:
+                self.min_stack.pop()
+
     def top(self) -> int:
-        if len(self.stack) > 0:
-            return self.stack[0]
+        return self.stack[-1]
 
     def getMin(self) -> int:
-        if len(self.stack) > 0:
-            return self.min_val
+        return self.min_stack[-1]
     
 """
 ## 2) Balanced Binary Tree
@@ -415,18 +463,26 @@ subtrees of every node never differs by more than one.
 #   
 # Learning : learn to work with list based trees .
 #
-
 def balanced_bst(root: Node) -> bool:
-    # code logic : 
-    # will calculate the height/depth or each subtree recursively and return True
-    # if just differ by 1 else False
-    if root == None:
-        return 0
-    else:
-        if (balanced_bst(root.left) + 1) - (balanced_bst(root.right) + 1) > 1:
-            return False
-        else:
-            return True
+    def height(node):
+        if node is None:
+            return 0
+
+        left_h = height(node.left)
+        if left_h == -1:
+            return -1
+
+        right_h = height(node.right)
+        if right_h == -1:
+            return -1
+
+        if abs(left_h - right_h) > 1:
+            return -1
+
+        return 1 + max(left_h, right_h)
+
+    return height(root) != -1
+
         
 """
 ## 3) 3Sum
@@ -463,29 +519,35 @@ The solution set must not contain duplicate triplets.
 """
 
 def three_sum(arr: list[int]) -> list[list[int]]:
-    # core logic:
-    # sort the array  
-    # will be using two pointer to track two element and use a set to keep 
-    # diff/already calculated num
-    # later fell on sliding window, problem with sliding window is it calculate
-    # only consecutive elements
-    if not arr:
-        return arr
-    resp = []
     arr.sort()
-    n = len(arr)
-    left = 0
-    right = 2
-    
-    while right < n:
-        if arr[left] + arr[left + 1] + arr[right] == 0:
-           resp.append([arr[left], arr[left + 1], arr[right]])
-           left += 1
-           right += 1
-        else:
-            left += 1
-            right += 1
-    return resp
+    result = []
+
+    for i in range(len(arr) - 2):
+        if i > 0 and arr[i] == arr[i - 1]:
+            continue
+
+        left = i + 1
+        right = len(arr) - 1
+
+        while left < right:
+            total = arr[i] + arr[left] + arr[right]
+
+            if total == 0:
+                result.append([arr[i], arr[left], arr[right]])
+                left += 1
+                right -= 1
+
+                while left < right and arr[left] == arr[left - 1]:
+                    left += 1
+                while left < right and arr[right] == arr[right + 1]:
+                    right -= 1
+
+            elif total < 0:
+                left += 1
+            else:
+                right -= 1
+
+    return result
 
 
 """
@@ -631,7 +693,36 @@ You must write an algorithm with `O(log n)` runtime complexity.
 * `0 <= nums.length <= 10^5`
 * `-10^9 <= nums[i] <= 10^9`
 """
+def search_range(nums: list[int], target: int) -> list[int]:
+    def find_first():
+        left, right = 0, len(nums) - 1
+        ans = -1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                ans = mid
+                right = mid - 1
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return ans
 
+    def find_last():
+        left, right = 0, len(nums) - 1
+        ans = -1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                ans = mid
+                left = mid + 1
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return ans
+
+    return [find_first(), find_last()]
 
 """
 ## 9) Spiral Matrix

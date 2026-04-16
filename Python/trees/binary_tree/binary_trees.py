@@ -4,6 +4,14 @@ A valid BST is defined as follows:
 The left subtree of a node contains only nodes with keys less than the node’s key.
 The right subtree contains only nodes with keys greater than the node’s key.
 Both the left and right subtrees must also be binary search trees.
+
+List based tree :
+
+root at index 0
+left child of index i → 2*i + 1
+right child of index i → 2*i + 2
+parent of index i → (i - 1) // 2
+
 """
 import math
 from collections import deque

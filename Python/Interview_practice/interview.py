@@ -66,9 +66,57 @@ def reverse_k_nodes_in_linklist(head: ListNode, kth: int) -> ListNode:
 def sub_arr_of_longest_consecutive_int():
     pass
 
-            
+"""
+## 7) Insert Interval
+
+**Topic:** Intervals
+**Difficulty:** Medium
+
+You are given an array of non-overlapping intervals `intervals` where 
+`intervals[i] = [starti, endi]` represent the start and the end of 
+the `i`th interval and `intervals` is sorted in ascending order 
+by `starti`. You are also given an interval `newInterval = [start, end]`.
+
+Insert `newInterval` into `intervals` such that `intervals` 
+is still sorted in ascending order by `starti` and still does 
+not have any overlapping intervals.
+
+Return `intervals` after the insertion.
+
+### Example 1
+
+**Input:**
+`intervals = [[1,3],[6,9]], newInterval = [2,5]`
+**Output:**
+`[[1,5],[6,9]]`
+"""
+
+def insert_and_merge_interval(intervals: list[list[int]], new_interval: list[int]) -> list[list[int]]:
+    n = len(intervals)
+    i = 0
+    resp = []
+    # add all intervals greater that new_interval
+    while i < n and intervals[i][1] < new_interval[0]:
+            resp.append(intervals[i])
+            i += 1
+    # merge all overlapping intervals 
+    while i < n and intervals[i][0] <= new_interval[1]:
+            new_interval[0] = min(intervals[i][0], new_interval[0])
+            new_interval[1] = max(intervals[i][1], new_interval[1])
+            i += 1
+    # append merged
+    resp.append(new_interval)
+
+    # add remaining interval
+    while i < n:
+        resp.append(intervals[i])
+        i += 1
+    return resp
 
 
 if __name__ == "__main__":
-    arr1 = [1, 9, 2, 3 ,4 , 6 , 7, 5]
-    print(longest_consecutive_sub_arr(arr1))
+    
+    intervals = [[1,3],[6,9]]
+    newInterval = [2,5]
+    print(insert_and_merge_interval(intervals, newInterval))
+    
