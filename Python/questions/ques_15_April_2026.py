@@ -439,7 +439,7 @@ def merge_ll(l1: Node, l2: Node) -> Node:
     dummy = Node(0)
     tail = dummy
     while l1 > l2:
-        if l1.val > l2.val:
+        if l1.val < l2.val:
             tail.next = l1
             l1 = l1.next
         else:
@@ -699,7 +699,7 @@ def right_side_view_bt(root: TreeNode) -> list[int | None]:
     return result
 
 
-def dfs(root: TreeNode, depth: int, result: list[int | None]) -> list[int | Node]:
+def dfs(root: TreeNode, depth: int, result: list[int]) -> None:
     if not root:
         return 
     if depth == len(result):
@@ -711,7 +711,58 @@ def dfs(root: TreeNode, depth: int, result: list[int | None]) -> list[int | Node
 
 def right_side_view_dfs(root: TreeNode) -> list[int | None]:
     result = []
-    return dfs(root, 0, result)
+    dfs(root, 0, result)
+    return result
+
+
+
+"""
+## 8) Car Fleet
+
+**Topic:** Stack, Sort
+**Difficulty:** Medium
+
+There are `n` cars going to the same destination along a one-lane road. 
+The destination is `target` miles away.
+
+You are given two integer arrays `position` and `speed`, both of length `n`, 
+where `position[i]` is the position of the `i`th car and `speed[i]` is the 
+speed of the `i`th car.
+
+A car can never pass another car ahead of it, but it can catch up to it and 
+drive bumper to bumper at the same speed.
+
+Return the number of car fleets that will arrive at the destination.
+
+### Example 1
+
+**Input:**
+`target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]`
+**Output:**
+`3`
+
+### Example 2
+
+**Input:**
+`target = 10, position = [3], speed = [3]`
+**Output:**
+`1`
+
+---
+"""
+
+def car_fleet(target: int, positions: list[int], speeds: list[int]) -> int:
+    cars = list(zip(positions, speeds))
+    cars.sort(reverse=True)
+    fleets = 0
+    max_time = 0
+    for pos, spd in cars:
+        time = (target - pos) / spd
+        if time > max_time:
+            fleet += 1
+            max_time = time
+    return fleets
+
 
 if __name__ == "__main__":
-    
+    pass

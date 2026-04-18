@@ -40,4 +40,4 @@ def product_of_all_except_self_v2(arr: list[int]) -> list[int]:
     return result
 
 if __name__ == "__main__":
-    print(product_of_all_except_self([1,2,4,6]))
+    print(product_of_all_except_self_v2([1,2,4,6]))
