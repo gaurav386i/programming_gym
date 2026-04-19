@@ -112,25 +112,24 @@ def remove_nth_node_from_end_of_list(head: ListNode, kth: int) -> ListNode:
     slow.next = slow.next.next
     return head
 
+@print_return_value
 def sort_colors(colors: list[int]) -> list[int]:
-    """
-    code logic:
-    init 2 pointers 
-    start = 0 and end = len(colors)
-    run loop and for each color push bigger one in the end:  
-    """
     if not colors:
         return colors
-    num_colors = len(set(colors))
-    
-    for i in range(num_colors):
-        start = i
-        end = len(colors) - 1
-        while start < end:
-            if colors[start] > colors[end]:
-                colors[start], colors[end] = colors[end], colors[start]
-            start += 1
-            end -= 1
+    low = 0
+    mid = 0
+    high = len(colors) - 1
+    while mid <= high:
+        if colors[mid] == 0:
+            colors[low], colors[mid] = colors[mid], colors[low]
+            mid += 1
+            low += 1
+        elif colors[mid] == 1:
+            mid += 1
+        else: # color[mid] == 2
+            colors[high], colors[mid] = colors[mid], colors[high]
+            mid += 1
+            high -= 1
     return colors
 
 

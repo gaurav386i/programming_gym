@@ -419,6 +419,27 @@ def inorder_traversal(root: TreeNode) -> list[int]:
         inorder_traversal(root.right)
     return result
 
+@print_return_value
+def itr_inorder_traversal(root: TreeNode) -> list[int]:
+    if root is None:
+        return
+    st = []
+    result = []
+    curr = root
+
+    while curr is not None:
+        st.append(curr)
+        curr = curr.left
+    
+    while st:
+        curr = st.pop()
+        result.append(curr.key)
+        curr = curr.right
+        while curr is not None:
+            st.append(curr)
+            curr = curr.left
+    return result
+
 root1 = TreeNode(9)
 root1.left = TreeNode(8)
 root1.right = TreeNode(11)
@@ -427,7 +448,6 @@ root1.left.right = TreeNode(7)
 root1.right.left = TreeNode(12)
 root1.right.right = TreeNode(14)
 
-inorder_traversal(root1)
 
 """
 
@@ -451,6 +471,42 @@ Output: `False`
 **Focus:** Bounds-based recursion, not just parent-child comparison.
 
 ---
+"""
+def valid_bst(root: TreeNode, prev: int) -> bool:
+    if root is None:
+        return True
+    if not valid_bst(root.left, prev):
+        return False
+    if prev is not None and root.key <= prev:
+        return False
+    prev = root.key
+    return valid_bst(root.right, prev)
+
+
+@print_return_value
+def is_valid_bst(root: TreeNode) ->bool:
+    prev = None
+    return valid_bst(root, prev)
+
+@print_return_value    
+def list_is_valid_bst(nums: list[int]) -> bool:
+    def validate_bst(idx: int , low: float, high: float) -> bool:
+        if idx >= len(nums) or nums[idx] is None:
+            # we are out side tree no valid nodes left
+            return True
+        val = nums[idx]
+        if not (low < val < high):
+            return False
+        left = 2 * idx + 1
+        right = 2 * idx + 2
+        return validate_bst(left, low, val) and validate_bst(right, val, high)
+    return validate_bst(0, float("-inf"), float("inf"))
+    
+    
+list_is_valid_bst([2,3,4,5,7])
+list_is_valid_bst([5,1,4,None,None,3,6])
+
+"""
 
 ## 10) Kth Largest Element in an Array
 
@@ -467,6 +523,34 @@ Output: `5`
 **Focus:** Min-heap of size `k`, complexity discussion.
 
 ---
+"""
+from heapq import heappush, heappop
+
+@print_return_value
+def naive_kth_largest_elm(nums: list[int], kth: int) -> int:
+    for i in range(1, len(nums)):
+        x = nums[i]
+        j = i-1
+        while j >= 0 and x < nums[j]:
+            nums[j+1] = nums[j]
+            j = j - 1
+        nums[j + 1] = x
+    return nums[len(nums) - kth]
+
+
+@print_return_value
+def kth_largest_element(nums: list[int], kth: int) -> int:
+    max_heap = []
+    for num in nums:
+        heappush(max_heap, -num)
+    for _ in range(min(kth -1, len(max_heap))):
+        heappop(max_heap)
+    return -heappop(max_heap)
+
+
+kth_largest_element([3,2,1,5,6,4], 2)
+naive_kth_largest_elm([3,2,1,5,6,4], 2)
+"""
 
 ## Good interview follow-ups for this set
 
