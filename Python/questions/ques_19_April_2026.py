@@ -1,4 +1,8 @@
+from collections import deque
+from heapq import heappush, heappop
+
 from utils import print_return_value
+
 """
 * **4 Easy**
 * **8 Medium**
@@ -25,8 +29,8 @@ This set covers:
 **Topic:** Stack
 **Difficulty:** Easy
 
-Given a string `s` containing just the characters 
-`'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, 
+Given a string `s` containing just the characters
+`'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`,
 determine if the input string is valid.
 
 A string is valid if:
@@ -55,6 +59,8 @@ A string is valid if:
 ---
 
 """
+
+
 def is_matching(a: str, b: str) -> bool:
     if a == "(" and b == ")":
         return True
@@ -64,6 +70,7 @@ def is_matching(a: str, b: str) -> bool:
         return True
     else:
         return False
+
 
 @print_return_value
 def valid_parentheses(string: str) -> bool:
@@ -76,7 +83,7 @@ def valid_parentheses(string: str) -> bool:
         else:
             if not st:
                 return False
-            elif is_matching(st[-1], ch) == False:
+            elif is_matching(st[-1], ch) is False:
                 return False
             else:
                 st.pop()
@@ -84,6 +91,7 @@ def valid_parentheses(string: str) -> bool:
         return False
     else:
         return True
+
 
 """
 
@@ -94,7 +102,8 @@ def valid_parentheses(string: str) -> bool:
 
 You are given the heads of two sorted linked lists `list1` and `list2`.
 
-Merge the two lists into one sorted list and return the head of the merged linked list.
+Merge the two lists into one sorted list and return the head of the merged
+linked list.
 
 ### Example 1
 
@@ -116,6 +125,8 @@ Merge the two lists into one sorted list and return the head of the merged linke
 
 ---
 """
+
+
 class Node:
     def __init__(self, val):
         self.val = val
@@ -139,9 +150,11 @@ def merged_two_sorted_ll(l1: Node, l2: Node) -> Node:
         tail = tail.next
     if l1:
         tail.next = l1
-    else: 
+    else:
         tail.next = l2
     return dummy.next
+
+
 """
 
 ## 3) Maximum Depth of Binary Tree
@@ -171,7 +184,7 @@ Given the `root` of a binary tree, return its maximum depth.
 
 ---
 """
-from collections import deque
+
 
 class TreeNode:
     def __init__(self, key):
@@ -190,6 +203,7 @@ def max_bt(root: TreeNode) -> int:
         ) + 1
 # iterative BFS
 
+
 @print_return_value
 def bfs_max_bt(root: TreeNode) -> int:
     if root is None:
@@ -207,7 +221,10 @@ def bfs_max_bt(root: TreeNode) -> int:
         height += 1
     return height
 
-# iterative DFS 
+
+# iterative DFS
+
+
 def dfs_max_bt(root: TreeNode) -> int:
     if root is None:
         return 0
@@ -222,6 +239,7 @@ def dfs_max_bt(root: TreeNode) -> int:
         if node.right:
             stack.append((node.right, depth + 1))
     return max_height
+
 
 """
 
@@ -254,14 +272,16 @@ Implement the `MyQueue` class:
 
 ---
 """
+
+
 class MyQueue:
     def __init__(self):
         self.in_stk = []
         self.out_stk = []
-    
+
     def push(self, val):
         self.in_stk.append(val)
-    
+
     def _move(self):
         if not self.out_stk:
             while self.in_stk:
@@ -271,8 +291,6 @@ class MyQueue:
         self._move()
         return self.out_stk.pop()
 
-    
-        
     def peek(self):
         self._move()
         return self.out_stk[-1]
@@ -289,10 +307,11 @@ class MyQueue:
 **Topic:** Sorting, Two Pointers
 **Difficulty:** Medium
 
-Given an array `nums` with `n` objects colored red, white, or blue, 
+Given an array `nums` with `n` objects colored red, white, or blue,
 sort them in-place so that objects of the same color are adjacent.
 
-Use the integers `0`, `1`, and `2` to represent the colors red, white, and blue.
+Use the integers `0`, `1`, and `2` to represent the colors red, white,
+and blue.
 
 You must solve this problem without using the library’s sort function.
 
@@ -316,6 +335,8 @@ You must solve this problem without using the library’s sort function.
 
 ---
 """
+
+
 @print_return_value
 def sort_colors(colors: list[int]) -> list[int]:
     if not colors:
@@ -330,11 +351,12 @@ def sort_colors(colors: list[int]) -> list[int]:
             low += 1
         elif colors[mid] == 1:
             mid += 1
-        else: # color[mid] == 2
+        else:  # color[mid] == 2
             colors[high], colors[mid] = colors[mid], colors[high]
             mid += 1
             high -= 1
     return colors
+
 
 """
 
@@ -343,7 +365,7 @@ def sort_colors(colors: list[int]) -> list[int]:
 **Topic:** Linked List, Slow and Fast Pointers
 **Difficulty:** Medium
 
-Given the `head` of a linked list, return the node where the cycle begins. 
+Given the `head` of a linked list, return the node where the cycle begins.
 If there is no cycle, return `null`.
 
 Do not modify the linked list.
@@ -368,6 +390,8 @@ Do not modify the linked list.
 
 ---
 """
+
+
 @print_return_value
 def detect_cycle_ll(head: Node) -> Node | None:
     if head is None:
@@ -407,11 +431,11 @@ n3.next = n1
 **Topic:** Sliding Window
 **Difficulty:** Medium
 
-You are given a string `s` and an integer `k`. You can choose any character of 
-the string and change it to any other uppercase English character 
+You are given a string `s` and an integer `k`. You can choose any character of
+the string and change it to any other uppercase English character
 at most `k` times.
 
-Return the length of the longest substring containing the same letter you can 
+Return the length of the longest substring containing the same letter you can
 get after performing at most `k` operations.
 
 ### Example 1
@@ -434,6 +458,8 @@ get after performing at most `k` operations.
 
 ---
 """
+
+
 def longest_repeating_char_replacement(s: str, ops: int) -> int:
     count = {}
     left = 0
@@ -444,11 +470,12 @@ def longest_repeating_char_replacement(s: str, ops: int) -> int:
         count[ch] = count.get(ch, 0) + 1
         max_freq = max(max_freq, count[ch])
         while (right - left + 1) - max_freq > ops:
-               count[s[left]] -= 1
-               left += 1
+            count[s[left]] -= 1
+            left += 1
         best = max(best, (right - left + 1))
     return best
-    
+
+
 """
 
 ## 8) Kth Largest Element in an Array
@@ -456,10 +483,10 @@ def longest_repeating_char_replacement(s: str, ops: int) -> int:
 **Topic:** Heap
 **Difficulty:** Medium
 
-Given an integer array `nums` and an integer `k`, return the 
+Given an integer array `nums` and an integer `k`, return the
 `k`th largest element in the array.
 
-Note that it is the `k`th largest element in sorted order, 
+Note that it is the `k`th largest element in sorted order,
 not the `k`th distinct element.
 
 ### Example 1
@@ -482,7 +509,7 @@ not the `k`th distinct element.
 
 ---
 """
-from heapq import heappush, heappop
+
 
 @print_return_value
 def kth_largest_element_in_arr(arr: list[int], kth: int) -> int:
@@ -505,10 +532,10 @@ def kth_largest_element_in_arr(arr: list[int], kth: int) -> int:
 **Topic:** K-way Merge, Heap
 **Difficulty:** Medium
 
-You are given two integer arrays `nums1` and `nums2` sorted in 
+You are given two integer arrays `nums1` and `nums2` sorted in
 ascending order and an integer `k`.
 
-Define a pair `(u, v)` where one element is from the first array and the 
+Define a pair `(u, v)` where one element is from the first array and the
 other is from the second array.
 
 Return the `k` pairs with the smallest sums.
@@ -539,10 +566,10 @@ Return the `k` pairs with the smallest sums.
 **Topic:** Greedy, Sorting, Intervals
 **Difficulty:** Medium
 
-You are given an array of non-overlapping intervals `intervals` sorted by 
+You are given an array of non-overlapping intervals `intervals` sorted by
 start time, and an interval `newInterval = [start, end]`.
 
-Insert `newInterval` into `intervals` such that the resulting intervals are 
+Insert `newInterval` into `intervals` such that the resulting intervals are
 still non-overlapping and sorted by start time.
 
 Return the new list of intervals.
@@ -567,11 +594,13 @@ Return the new list of intervals.
 
 ---
 """
+
+
 @print_return_value
 def insert_intervals(
         intervals: list[list[int]], new_interval: list[int]
-    ) -> list[list[int]]:
-    # core logic 
+) -> list[list[int]]:
+    # core logic
     # add all intervals into result which comes before new_interval
     # merge all interval which overlaps which new interval
     # add updated new_interval
@@ -581,24 +610,25 @@ def insert_intervals(
     result = []
     i = 0
     n = len(intervals)
-    
+
     while i < n and intervals[i][1] < new_interval[0]:
-            result.append(intervals[i])
-            i += 1
+        result.append(intervals[i])
+        i += 1
 
     while i < n and intervals[i][0] <= new_interval[1]:
-            new_interval[0] = min(intervals[i][0], new_interval[0])
-            new_interval[1] = max(intervals[i][1], new_interval[1])
-            i += 1
+        new_interval[0] = min(intervals[i][0], new_interval[0])
+        new_interval[1] = max(intervals[i][1], new_interval[1])
+        i += 1
 
     result.append(new_interval)
 
     while i < n:
-            result.append(intervals[i])
-            i += 1
+        result.append(intervals[i])
+        i += 1
     return result
 
-insert_intervals([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])
+
+insert_intervals([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8])
 
 """
 
@@ -607,10 +637,10 @@ insert_intervals([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])
 **Topic:** Graphs, Topological Sort
 **Difficulty:** Medium
 
-There are a total of `numCourses` courses you have to take, 
+There are a total of `numCourses` courses you have to take,
 labeled from `0` to `numCourses - 1`.
 
-You are given an array `prerequisites` where `prerequisites[i] = [a, b]` 
+You are given an array `prerequisites` where `prerequisites[i] = [a, b]`
 indicates that you must take course `b` first if you want to take course `a`.
 
 Return `true` if you can finish all courses. Otherwise, return `false`.
@@ -635,16 +665,54 @@ Return `true` if you can finish all courses. Otherwise, return `false`.
 
 ---
 
+"""
+
+
+def can_finish_courses(
+        numCourses: int,
+        prerequisites: list[list[int]]
+) -> bool:
+    if not numCourses or not prerequisites:
+        return False
+    # prepare graph
+    graph = {i: [] for i in range(len(numCourses))}
+    indegree = [0] * numCourses
+
+    for course, prerequisite in prerequisites:
+        graph[prerequisite].append(course)
+        indegree[course] += 1
+
+    q = deque()
+
+    for i in range(len(numCourses)):
+        if indegree[i] == 0:
+            q.append(indegree[i])
+
+    completed = 0
+
+    while q:
+        node = q.popleft()
+        completed += 1
+        for nei in graph[node]:
+            indegree[nei] -= 1
+            if indegree[nei] == 0:
+                q.append(nei)
+
+    return completed == numCourses
+
+
+"""
+
 ## 12) Container With Most Water
 
 **Topic:** Two Pointers, Greedy
 **Difficulty:** Medium
 
-You are given an integer array `height` of length `n`. There are `n` vertical 
-lines drawn such that the two endpoints of the `i`th line are `(i, 0)` 
+You are given an integer array `height` of length `n`. There are `n` vertical
+lines drawn such that the two endpoints of the `i`th line are `(i, 0)`
 and `(i, height[i])`.
 
-Find two lines that together with the x-axis form a container that holds 
+Find two lines that together with the x-axis form a container that holds
 the most water.
 
 Return the maximum amount of water a container can store.
@@ -669,6 +737,8 @@ Return the maximum amount of water a container can store.
 
 ---
 """
+
+
 @print_return_value
 def container_with_most_water(heights: list[int]) -> int:
     if not heights:
@@ -687,7 +757,6 @@ def container_with_most_water(heights: list[int]) -> int:
         else:
             end -= 1
     return max_capacity
-
 
 
 """

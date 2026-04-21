@@ -1,5 +1,4 @@
-
-
+from collections import deque
 """
 ---
 
@@ -8,7 +7,8 @@
 **Topic:** Stack, Design
 **Difficulty:** Easy
 
-Design a stack that supports `push`, `pop`, `top`, and retrieving the minimum element in constant time.
+Design a stack that supports `push`, `pop`, `top`, and retrieving the minimum
+element in constant time.
 
 Implement the `MinStack` class:
 
@@ -30,7 +30,8 @@ Implement the `MinStack` class:
 ### Constraints
 
 * `-2^31 <= val <= 2^31 - 1`
-* Methods `pop`, `top`, and `getMin` operations will always be called on non-empty stacks.
+* Methods `pop`, `top`, and `getMin` operations will always be called on
+non-empty stacks.
 
 ---
 
@@ -41,7 +42,7 @@ Implement the `MinStack` class:
 
 Given a binary tree, determine if it is height-balanced.
 
-A height-balanced binary tree is a binary tree in which the depth of the 
+A height-balanced binary tree is a binary tree in which the depth of the
 two subtrees of every node never differs by more than one.
 
 ### Example 1
@@ -70,7 +71,8 @@ two subtrees of every node never differs by more than one.
 **Topic:** Array, Sorting, Two Pointers
 **Difficulty:** Medium
 
-Given an integer array `nums`, return all the unique triplets `[nums[i], nums[j], nums[k]]` such that:
+Given an integer array `nums`, return all the unique triplets
+`[nums[i], nums[j], nums[k]]` such that:
 
 * `i != j`, `i != k`, and `j != k`
 * `nums[i] + nums[j] + nums[k] == 0`
@@ -103,7 +105,8 @@ The solution set must not contain duplicate triplets.
 **Topic:** Hashing, Strings, Array
 **Difficulty:** Medium
 
-Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
+Given an array of strings `strs`, group the anagrams together. You can return
+the answer in any order.
 
 An Anagram is a word formed by rearranging the letters of another word.
 
@@ -133,11 +136,13 @@ An Anagram is a word formed by rearranging the letters of another word.
 **Topic:** Linked List, Slow and Fast Pointers
 **Difficulty:** Medium
 
-You are given the head of a singly linked-list. Reorder the list to be on the following form:
+You are given the head of a singly linked-list. Reorder the list to be on
+the following form:
 
 `L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...`
 
-You may not modify the values in the list’s nodes. Only nodes themselves may be changed.
+You may not modify the values in the list’s nodes. Only nodes themselves may
+be changed.
 
 ### Example 1
 
@@ -165,7 +170,7 @@ You may not modify the values in the list’s nodes. Only nodes themselves may b
 **Topic:** Searching, Binary Search
 **Difficulty:** Medium
 
-Given an array of integers `nums` sorted in non-decreasing order, 
+Given an array of integers `nums` sorted in non-decreasing order,
 find the starting and ending position of a given `target` value.
 
 If `target` is not found in the array, return `[-1, -1]`.
@@ -198,11 +203,11 @@ You must write an algorithm with `O(log n)` runtime complexity.
 **Topic:** Heaps, Greedy, Hashing
 **Difficulty:** Medium
 
-You are given an array of CPU tasks, each represented by a character 
+You are given an array of CPU tasks, each represented by a character
 from `A` to `Z`, and a cooling time `n`.
 
-Each cycle or interval allows the completion of one task. 
-Tasks can be completed in any order, but there must be at least 
+Each cycle or interval allows the completion of one task.
+Tasks can be completed in any order, but there must be at least
 `n` intervals between two same tasks.
 
 Return the minimum number of intervals required to complete all tasks.
@@ -229,7 +234,9 @@ Return the minimum number of intervals required to complete all tasks.
 
 ---
 """
+
 from collections import Counter
+
 
 def least_interval(tasks: list[str], n: int) -> int:
     freq = Counter(tasks)
@@ -237,6 +244,8 @@ def least_interval(tasks: list[str], n: int) -> int:
     count_max = sum(1 for v in freq.values() if v == max_freq)
 
     return max(len(tasks), (max_freq - 1) * (n + 1) + count_max)
+
+
 """
 
 ## 8) Course Schedule
@@ -244,10 +253,10 @@ def least_interval(tasks: list[str], n: int) -> int:
 **Topic:** Graphs, Topological Sort, DFS/BFS
 **Difficulty:** Medium
 
-There are a total of `numCourses` courses you have to take, 
+There are a total of `numCourses` courses you have to take,
 labeled from `0` to `numCourses - 1`.
 
-You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]` 
+You are given an array `prerequisites` where `prerequisites[i] = [ai, bi]`
 indicates that you must take course `bi` first if you want to take course `ai`.
 
 Return `true` if you can finish all courses. Otherwise, return `false`.
@@ -272,7 +281,7 @@ Return `true` if you can finish all courses. Otherwise, return `false`.
 * `0 <= prerequisites.length <= 5000`
 
 """
-from collections import deque
+
 
 def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
     graph = {i: [] for i in range(numCourses)}
@@ -299,6 +308,8 @@ def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
                 queue.append(nei)
 
     return completed == numCourses
+
+
 """
 
 ---
@@ -336,9 +347,11 @@ Given an `m x n` matrix, return all elements of the matrix in spiral order.
 **Topic:** Array, In-place Manipulation
 **Difficulty:** Hard
 
-Given an unsorted integer array `nums`, return the smallest missing positive integer.
+Given an unsorted integer array `nums`, return the smallest missing
+positive integer.
 
-You must implement an algorithm that runs in `O(n)` time and uses `O(1)` auxiliary space.
+You must implement an algorithm that runs in `O(n)` time and uses
+`O(1)` auxiliary space.
 
 ### Example 1
 
@@ -369,6 +382,8 @@ You must implement an algorithm that runs in `O(n)` time and uses `O(1)` auxilia
 ---
 
 """
+
+
 def first_missing_positive(nums: list[int]) -> int:
     n = len(nums)
 
@@ -383,12 +398,15 @@ def first_missing_positive(nums: list[int]) -> int:
 
     return n + 1
 
-#+++++++++++
+
+# +++++++++++
+
 
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
 
 class Node:
     def __init__(self, key=0, left=None, right=None):
@@ -396,8 +414,10 @@ class Node:
         self.left = left
         self.right = right
 
+
 """
-Design a stack that supports `push`, `pop`, `top`, and retrieving the minimum element in constant time.
+Design a stack that supports `push`, `pop`, `top`, and retrieving the
+minimum element in constant time.
 
 Implement the `MinStack` class:
 
@@ -407,6 +427,7 @@ Implement the `MinStack` class:
 * `top()` gets the top element.
 * `getMin()` retrieves the minimum element in the stack.
 """
+
 
 class MinStack:
     def __init__(self):
@@ -429,7 +450,8 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.min_stack[-1]
-    
+
+
 """
 ## 2) Balanced Binary Tree
 
@@ -438,7 +460,7 @@ class MinStack:
 
 Given a binary tree, determine if it is height-balanced.
 
-A height-balanced binary tree is a binary tree in which the depth of the two 
+A height-balanced binary tree is a binary tree in which the depth of the two
 subtrees of every node never differs by more than one.
 
 ### Example 1
@@ -460,7 +482,9 @@ subtrees of every node never differs by more than one.
 * The number of nodes in the tree is in the range `[0, 5000]`
 * `-10^4 <= Node.val <= 10^4`
 """
-#   
+
+
+#
 # Learning : learn to work with list based trees .
 #
 def balanced_bst(root: Node) -> bool:
@@ -483,14 +507,15 @@ def balanced_bst(root: Node) -> bool:
 
     return height(root) != -1
 
-        
+
 """
 ## 3) 3Sum
 
 **Topic:** Array, Sorting, Two Pointers
 **Difficulty:** Medium
 
-Given an integer array `nums`, return all the unique triplets `[nums[i], nums[j], nums[k]]` such that:
+Given an integer array `nums`, return all the unique triplets
+`[nums[i], nums[j], nums[k]]` such that:
 
 * `i != j`, `i != k`, and `j != k`
 * `nums[i] + nums[j] + nums[k] == 0`
@@ -517,6 +542,7 @@ The solution set must not contain duplicate triplets.
 * `-10^5 <= nums[i] <= 10^5`
 
 """
+
 
 def three_sum(arr: list[int]) -> list[list[int]]:
     arr.sort()
@@ -556,7 +582,7 @@ def three_sum(arr: list[int]) -> list[list[int]]:
 **Topic:** Hashing, Strings, Array
 **Difficulty:** Medium
 
-Given an array of strings `strs`, group the anagrams together. 
+Given an array of strings `strs`, group the anagrams together.
 You can return the answer in any order.
 
 An Anagram is a word formed by rearranging the letters of another word.
@@ -581,10 +607,11 @@ An Anagram is a word formed by rearranging the letters of another word.
 * `0 <= strs[i].length <= 100`
 """
 
+
 def group_anagrams(words: list[str]) -> list[list[str]]:
     if not words:
         return words
-    u_map = {} # {"aet": ["eat", "tea"]}
+    u_map = {}  # {"aet": ["eat", "tea"]}
     resp = []
     for w in words:
         s = "".join(sorted(w))
@@ -597,17 +624,20 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
     # or return list(u_map.values())
     return resp
 
+
 """
 ## 5) Reorder List
 
 **Topic:** Linked List, Slow and Fast Pointers
 **Difficulty:** Medium
 
-You are given the head of a singly linked-list. Reorder the list to be on the following form:
+You are given the head of a singly linked-list. Reorder the list to be on
+the following form:
 
 `L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...`
 
-You may not modify the values in the list’s nodes. Only nodes themselves may be changed.
+You may not modify the values in the list’s nodes. Only nodes themselves
+may be changed.
 
 ### Example 1
 
@@ -629,6 +659,7 @@ You may not modify the values in the list’s nodes. Only nodes themselves may b
 * `1 <= Node.val <= 1000`
 """
 
+
 def reorder_linklist(head: ListNode) -> ListNode:
     if not head:
         return head
@@ -638,8 +669,8 @@ def reorder_linklist(head: ListNode) -> ListNode:
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
-    
-    # 2 detach from middle and reverse half of linklist 
+
+    # 2 detach from middle and reverse half of linklist
     curr = slow.next
     prev = None
     slow.next = None
@@ -648,7 +679,7 @@ def reorder_linklist(head: ListNode) -> ListNode:
         curr.next = prev
         prev = curr
         curr = nxt
-    
+
     # 3 Interleave and Merge
 
     first, second = head, prev
@@ -667,7 +698,7 @@ def reorder_linklist(head: ListNode) -> ListNode:
 **Topic:** Searching, Binary Search
 **Difficulty:** Medium
 
-Given an array of integers `nums` sorted in non-decreasing order, 
+Given an array of integers `nums` sorted in non-decreasing order,
 find the starting and ending position of a given `target` value.
 
 If `target` is not found in the array, return `[-1, -1]`.
@@ -693,6 +724,8 @@ You must write an algorithm with `O(log n)` runtime complexity.
 * `0 <= nums.length <= 10^5`
 * `-10^9 <= nums[i] <= 10^9`
 """
+
+
 def search_range(nums: list[int], target: int) -> list[int]:
     def find_first():
         left, right = 0, len(nums) - 1
@@ -724,6 +757,7 @@ def search_range(nums: list[int], target: int) -> list[int]:
 
     return [find_first(), find_last()]
 
+
 """
 ## 9) Spiral Matrix
 
@@ -752,6 +786,7 @@ Given an `m x n` matrix, return all elements of the matrix in spiral order.
 * `-100 <= matrix[i][j] <= 100`
 """
 
+
 def print_matrix_spiral(mat: list[list[int]]) -> None:
     if not mat or not mat[0]:
         return None
@@ -768,16 +803,15 @@ def print_matrix_spiral(mat: list[list[int]]) -> None:
         for i in range(top, bottom + 1):
             print(mat[i][right], end=" ")
         right -= 1
-        if top <= bottom: 
-            for i in range(right, left - 1 , -1):
+        if top <= bottom:
+            for i in range(right, left - 1, -1):
                 print(mat[bottom][i], end=" ")
             bottom -= 1
         if left <= right:
-            for i in range(bottom, top - 1 , -1):
+            for i in range(bottom, top - 1, -1):
                 print(mat[i][left], end=" ")
             left += 1
 
+
 if __name__ == "__main__":
-    print_matrix_spiral(
-        [[1,2,3],[4,5,6],[7,8,9]]
-    )
+    print_matrix_spiral([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
