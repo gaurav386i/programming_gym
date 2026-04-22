@@ -1,5 +1,6 @@
 from collections import deque
 from utils import print_return_value, print_linklist
+from heapq import heappush, heappop
 
 """
 ---
@@ -149,14 +150,37 @@ Given the `root` of a binary tree, invert the tree, and return its root.
 
 ---
 
+"""
+
+
+class TreeNode:
+    def __init__(self, key: int):
+        self.key = key
+        self.left = None
+        self.right = None
+
+
+def invert_bt(root: TreeNode) -> TreeNode:
+    if root is None:
+        return root
+    root.left, root.right = root.right, root.left
+
+    invert_bt(root.left)
+    invert_bt(root.right)
+
+    return root
+
+
+"""
+
 ## 4) Merge Sorted Array
 
 **Topic:** Sorting, Two Pointers, Array
 **Difficulty:** Easy
 
-You are given two integer arrays `nums1` and `nums2`, sorted in 
-non-decreasing order, 
-and two integers `m` and `n`, representing the number of valid elements in 
+You are given two integer arrays `nums1` and `nums2`, sorted in
+non-decreasing order,
+and two integers `m` and `n`, representing the number of valid elements in
 `nums1` and `nums2` respectively.
 
 Merge `nums1` and `nums2` into a single array sorted in non-decreasing order.
@@ -218,8 +242,8 @@ def merge_two_sorted_arr_in_one(
 **Topic:** Linked List, Pointer Manipulation
 **Difficulty:** Medium
 
-You are given two non-empty linked lists representing two non-negative 
-integers. The digits are stored in reverse order, and each of their 
+You are given two non-empty linked lists representing two non-negative
+integers. The digits are stored in reverse order, and each of their
 nodes contains a single digit.
 
 Add the two numbers and return the sum as a linked list.
@@ -259,7 +283,7 @@ def add_val_from_two_ll(l1: Node, l2: Node) -> Node:
         carry = total // 10
         curr.next = Node(total % 10)
         curr = curr.next
-        
+
         if l1:
             l1 = l1.next
         if l2:
@@ -274,7 +298,7 @@ def add_val_from_two_ll(l1: Node, l2: Node) -> Node:
 **Topic:** Stack, String
 **Difficulty:** Medium
 
-Given a string `s` of `'('`, `')'`, and lowercase English characters, 
+Given a string `s` of `'('`, `')'`, and lowercase English characters,
 remove the minimum number of parentheses so that the resulting string is valid.
 
 Return any valid string.
@@ -333,8 +357,8 @@ def return_valid_parentheses(word: str) -> str:
 **Topic:** Sliding Window, Array
 **Difficulty:** Medium
 
-Given an array of positive integers `nums` and a positive integer `target`, 
-return the minimal length of a subarray whose sum is greater than or equal 
+Given an array of positive integers `nums` and a positive integer `target`,
+return the minimal length of a subarray whose sum is greater than or equal
 to `target`. If there is no such subarray, return `0` instead.
 
 ### Example 1
@@ -380,8 +404,6 @@ def min_size_sub_arr_sum(nums: list[int], target: int) -> int:
     return 0 if curr_sum == float("inf") else min_size
 
 
-min_size_sub_arr_sum([1, 1, 1, 1, 1, 1, 1, 1], 11)
-
 """
 
 ## 8) Reorganize String
@@ -389,10 +411,10 @@ min_size_sub_arr_sum([1, 1, 1, 1, 1, 1, 1, 1], 11)
 **Topic:** Heap, Greedy, String
 **Difficulty:** Medium
 
-Given a string `s`, rearrange the characters of `s` so that any two 
+Given a string `s`, rearrange the characters of `s` so that any two
 adjacent characters are not the same.
 
-Return any possible rearrangement of `s` or return an empty string 
+Return any possible rearrangement of `s` or return an empty string
 if not possible.
 
 ### Example 1
@@ -415,16 +437,42 @@ if not possible.
 * `s` consists of lowercase English letters
 
 ---
+"""
 
+
+@print_return_value
+def rearrange_ch(word: str) -> str:
+    if not word:
+        return ""
+    max_heap = []
+    freq = {}
+    resp = []
+    prev_count, prev_ch = 0, ""
+    for ch in word:
+        freq[ch] = freq.get(ch, 0) + 1
+    for key, val in freq.items():
+        heappush(max_heap, (-val, key))
+    while max_heap:
+        count, ch = heappop(max_heap)
+        resp.append(ch)
+        if prev_count < 0:
+            heappush(max_heap, (prev_count, prev_ch))
+        count += 1
+        prev_count, prev_ch = count, ch
+    arranged = "".join(resp)
+    return arranged if len(arranged) == len(word) else ""
+
+
+"""
 ## 9) Kth Smallest Element in a Sorted Matrix
 
 **Topic:** Heap, K-way Merge
 **Difficulty:** Medium
 
-Given an `n x n` matrix where each of the rows and columns is sorted in 
+Given an `n x n` matrix where each of the rows and columns is sorted in
 ascending order, return the `k`th smallest element in the matrix.
 
-Note that it is the `k`th smallest element in the sorted order, not the 
+Note that it is the `k`th smallest element in the sorted order, not the
 `k`th distinct element.
 
 ### Example 1
@@ -448,17 +496,43 @@ Note that it is the `k`th smallest element in the sorted order, not the
 * `1 <= k <= n * n`
 
 ---
+"""
+
+
+@print_return_value
+def kth_smallest_elm_in_sorted_matrix(mat: list[list[int]], kth: int) -> int:
+    # matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8
+    if not mat:
+        return 0
+    min_heap = []
+    resp = []
+    for i, list in enumerate(mat):
+        heappush(min_heap, (list[0], 0, i))
+    count = 0
+    resp
+    while min_heap and count <= kth - 1:
+        elm, e_idx, l_idx = heappop(min_heap)
+
+        if l_idx < len(mat) and e_idx + 1 < len(mat[l_idx]):
+            heappush(min_heap, (mat[l_idx][e_idx + 1], e_idx + 1, l_idx))
+        count += 1
+        if count == kth - 1:
+            resp = elm
+    return elm
+
+
+"""
 
 ## 10) Boats to Save People
 
 **Topic:** Sorting, Two Pointers, Greedy
 **Difficulty:** Medium
 
-You are given an array `people` where `people[i]` is the weight of 
-the `i`th person, and an infinite number of boats where each boat 
+You are given an array `people` where `people[i]` is the weight of
+the `i`th person, and an infinite number of boats where each boat
 can carry a maximum weight of `limit`.
 
-Each boat carries at most two people at the same time, provided 
+Each boat carries at most two people at the same time, provided
 the sum of their weights is at most `limit`.
 
 Return the minimum number of boats to carry every given person.
@@ -483,13 +557,35 @@ Return the minimum number of boats to carry every given person.
 * `1 <= people[i] <= limit <= 3 * 10^4`
 
 ---
+"""
+
+
+@print_return_value
+def boats_to_save_people(people: list[int], limit: int) -> int:
+    if not people:
+        return 0
+    people.sort()
+    start = 0
+    end = len(people) - 1
+    count = 0
+    while start <= end:
+        if people[start] + people[end] <= limit:
+            start += 1
+        end -= 1
+        count += 1
+    return count
+
+
+boats_to_save_people([3, 2, 2, 1], 3)
+
+"""
 
 ## 11) Clone Graph
 
 **Topic:** Graphs, DFS, BFS
 **Difficulty:** Medium
 
-Given a reference of a node in a connected undirected graph, 
+Given a reference of a node in a connected undirected graph,
 return a deep copy of the graph.
 
 Each node in the graph contains a value and a list of its neighbors.
@@ -515,12 +611,26 @@ Each node in the graph contains a value and a list of its neighbors.
 
 ---
 
+
+"""
+
+
+def deep_copy_of_graph_using_dfs(root: TreeNode) -> TreeNode:
+    if root is None:
+        return root
+    old_to_new = {}
+    def dfs(n)
+    return result
+
+
+"""
+
 ## 12) Binary Tree Level Order Traversal
 
 **Topic:** Tree, Queue, BFS
 **Difficulty:** Medium
 
-Given the `root` of a binary tree, return the level order 
+Given the `root` of a binary tree, return the level order
 traversal of its nodes’ values.
 
 That is, from left to right, level by level.
@@ -545,6 +655,38 @@ That is, from left to right, level by level.
 * `-1000 <= Node.val <= 1000`
 
 ---
+"""
+
+
+@print_return_value
+def bfs_level_order_traversal(root: TreeNode) -> None:
+    # root = [3,9,20,null,null,15,7]
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    result = []
+    while q:
+        level_size = len(q)
+        level = []
+        for _ in range(level_size):
+            node = q.popleft()
+            level.append(node.key)
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        result.append(level)
+    return result
+
+
+root1 = TreeNode(3)
+root1.left = TreeNode(9)
+root1.right = TreeNode(20)
+root1.right.left = TreeNode(15)
+root1.right.right = TreeNode(7)
+
+""""
 
 ## Difficulty split
 
