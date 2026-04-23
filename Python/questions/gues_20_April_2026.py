@@ -1,5 +1,5 @@
 from collections import deque
-from utils import print_return_value, print_linklist
+from utils import print_return_value
 from heapq import heappush, heappop
 
 """
@@ -615,12 +615,26 @@ Each node in the graph contains a value and a list of its neighbors.
 """
 
 
-def deep_copy_of_graph_using_dfs(root: TreeNode) -> TreeNode:
-    if root is None:
-        return root
-    old_to_new = {}
-    def dfs(n)
-    return result
+class Node:
+    def __init__(self, key, neighbors):
+        self.key = key
+        self.neighbors = neighbors if neighbors is not None else []
+
+
+def clone_graph_bfs(node: Node) -> Node | None:
+    if node is None:
+        return None
+    old_to_new = {node: Node(node.val)}
+    q = deque([node])
+
+    while q:
+        curr = q.popleft()
+        for nei in curr.neighbors:
+            if nei not in old_to_new:
+                old_to_new[nei] = Node(nei.val)
+                q.append(nei)
+            old_to_new(curr).neghbors.append(old_to_new[nei])
+    return old_to_new[node]
 
 
 """
