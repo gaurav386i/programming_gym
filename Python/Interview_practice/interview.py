@@ -9,6 +9,7 @@ There is an unsorted intger array, calculate longest subarray of consecutive
 integers
 """
 
+
 def longest_consecutive_sub_arr(arr: list[int]) -> list[int]:
     if not arr:
         return []
@@ -28,7 +29,6 @@ def longest_consecutive_sub_arr(arr: list[int]) -> list[int]:
                 best_len = lenth
                 best_start = curr
     return []
-
 
 
 def reverse_k_nodes_in_linklist(head: ListNode, kth: int) -> ListNode:
@@ -52,7 +52,7 @@ def reverse_k_nodes_in_linklist(head: ListNode, kth: int) -> ListNode:
             curr.next = prev
             prev = curr
             curr = nxt
-        
+
         tail = next_group_head
         group_prev.next = prev
         tail.next = curr
@@ -65,6 +65,7 @@ def reverse_k_nodes_in_linklist(head: ListNode, kth: int) -> ListNode:
 
 def sub_arr_of_longest_consecutive_int():
     pass
+
 
 """
 ## 7) Insert Interval
@@ -91,19 +92,22 @@ Return `intervals` after the insertion.
 `[[1,5],[6,9]]`
 """
 
-def insert_and_merge_interval(intervals: list[list[int]], new_interval: list[int]) -> list[list[int]]:
+
+def insert_and_merge_interval(
+    intervals: list[list[int]], new_interval: list[int]
+) -> list[list[int]]:
     n = len(intervals)
     i = 0
     resp = []
     # add all intervals greater that new_interval
     while i < n and intervals[i][1] < new_interval[0]:
-            resp.append(intervals[i])
-            i += 1
-    # merge all overlapping intervals 
+        resp.append(intervals[i])
+        i += 1
+    # merge all overlapping intervals
     while i < n and intervals[i][0] <= new_interval[1]:
-            new_interval[0] = min(intervals[i][0], new_interval[0])
-            new_interval[1] = max(intervals[i][1], new_interval[1])
-            i += 1
+        new_interval[0] = min(intervals[i][0], new_interval[0])
+        new_interval[1] = max(intervals[i][1], new_interval[1])
+        i += 1
     # append merged
     resp.append(new_interval)
 
@@ -115,8 +119,7 @@ def insert_and_merge_interval(intervals: list[list[int]], new_interval: list[int
 
 
 if __name__ == "__main__":
-    
-    intervals = [[1,3],[6,9]]
-    newInterval = [2,5]
+
+    intervals = [[1, 3], [6, 9]]
+    newInterval = [2, 5]
     print(insert_and_merge_interval(intervals, newInterval))
-    

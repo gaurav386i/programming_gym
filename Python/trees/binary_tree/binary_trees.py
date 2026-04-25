@@ -78,7 +78,7 @@ Given the root of a BST and a value, return the node where the value exists.
 If it does not exist, return null.
 """
 def search_BST_for_node(root: Node, value) -> Node:
-    if root == None:
+    if root is None:
         return None
     if root.key == value:
         return root

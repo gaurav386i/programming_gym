@@ -343,6 +343,8 @@ Sort the elements of `arr1` such that:
 
 ---
 """
+
+
 def relative_arr_sort(arr1: list[int], arr2: list[int]) -> list[int]:
     if not arr1:
         return arr2
@@ -390,10 +392,11 @@ the path equals `targetSum`.
 
 """
 
+
 def bfs_target_sum(root: TreeNode, target_sum: int) -> bool:
     if not root:
         return False
-    
+
     # If this is a leafnode check if sum matches
     if not root.left and not root.right:
         return root.key == target_sum
@@ -427,6 +430,8 @@ ascending order.
 `[-1,0,3,4,5]`
 
 """
+
+
 def get_ll_mid(head: None) -> Node:
     slow = head
     fast = head.next
@@ -434,6 +439,7 @@ def get_ll_mid(head: None) -> Node:
         slow = slow.next
         fast = fast.next.next
     return slow
+
 
 def merge_ll(l1: Node, l2: Node) -> Node:
     dummy = Node(0)
@@ -452,8 +458,9 @@ def merge_ll(l1: Node, l2: Node) -> Node:
         tail.next = l2
     return dummy.next
 
+
 def sort_ll_in_ascending(head: Node) -> Node:
-    # get mid of linked list 
+    # get mid of linked list
     mid = get_ll_mid(head)
     # break ll into two halfs
     right_head = mid.next
@@ -461,6 +468,7 @@ def sort_ll_in_ascending(head: Node) -> Node:
     left = sort_ll_in_ascending(head)
     right = sort_ll_in_ascending(right_head)
     return merge_ll(left, right)
+
 
 """
 ## 4) Find Minimum in Rotated Sorted Array
@@ -490,6 +498,8 @@ You must write an algorithm that runs in `O(log n)` time.
 
 ---
 """
+
+
 def min_rotated_sort_arr(nums: list[int]) -> int:
     if not nums:
         return 0
@@ -529,6 +539,7 @@ the intervals non-overlapping.
 `2`
 """
 
+
 @print_return_value
 def num_of_non_overlapping_intervals(intervals: list[list[int]]) -> int:
     if not intervals:
@@ -543,6 +554,7 @@ def num_of_non_overlapping_intervals(intervals: list[list[int]]) -> int:
         else:
             prev_end = end
     return count
+
 
 """
 ## 6) Koko Eating Bananas
@@ -573,6 +585,8 @@ Return the minimum integer `k` such that she can eat all bananas within
 **Output:**
 `30`
 """
+
+
 def koko_banana_eating_speed(piles: list[int], h: int) -> int:
     if not piles:
         return 0
@@ -584,13 +598,12 @@ def koko_banana_eating_speed(piles: list[int], h: int) -> int:
         # calculate total hours needed at speed = mid
         hour = 0
         for pile in piles:
-            hour += (pile + mid -1) // mid # same as ceil(pile/mid)
+            hour += (pile + mid - 1) // mid  # same as ceil(pile/mid)
         if hour <= h:
-            right = mid # mid works, try smaller speed
+            right = mid  # mid works, try smaller speed
         else:
             left = mid + 1  # mid too slow
     return left
-
 
 
 """
@@ -625,16 +638,18 @@ Return the total number of provinces.
 `3`
 """
 
+
 def dfs(grid: list[list[int]], r: int, c: int) -> bool:
     if r < 0 or r >= len(grid) or c < 0 or c >= len(grid[0]) or grid[r][c] == 0:
-        return 
+        return
     # mark visited by changing value to 0
     grid[r][c] = 0
-    # with nearby cells 
+    # with nearby cells
     dfs(grid, r + 1, c)
     dfs(grid, r - 1, c)
     dfs(grid, r, c + 1)
     dfs(grid, r, c - 1)
+
 
 @print_return_value
 def number_of_province(grid: list[list[int]]) -> int:
@@ -645,7 +660,7 @@ def number_of_province(grid: list[list[int]]) -> int:
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == 1:
-                # number of disconnected graphs are number of cities 
+                # number of disconnected graphs are number of cities
                 result += 1
                 dfs(grid, r, c)
     return result
@@ -679,6 +694,7 @@ bottom.
 """
 from collections import deque
 
+
 @print_return_value
 def right_side_view_bt(root: TreeNode) -> list[int | None]:
     if not root:
@@ -701,7 +717,7 @@ def right_side_view_bt(root: TreeNode) -> list[int | None]:
 
 def dfs(root: TreeNode, depth: int, result: list[int]) -> None:
     if not root:
-        return 
+        return
     if depth == len(result):
         result.append(root.key)
     dfs(root.right, depth + 1, result)
@@ -709,11 +725,11 @@ def dfs(root: TreeNode, depth: int, result: list[int]) -> None:
 
     return result
 
+
 def right_side_view_dfs(root: TreeNode) -> list[int | None]:
     result = []
     dfs(root, 0, result)
     return result
-
 
 
 """
@@ -751,17 +767,18 @@ Return the number of car fleets that will arrive at the destination.
 ---
 """
 
+
 def car_fleet(target: int, positions: list[int], speeds: list[int]) -> int:
     cars = list(zip(positions, speeds))
     cars.sort(reverse=True)
-    fleets = 0
+    fleet = 0
     max_time = 0
     for pos, spd in cars:
         time = (target - pos) / spd
         if time > max_time:
             fleet += 1
             max_time = time
-    return fleets
+    return fleet
 
 
 if __name__ == "__main__":

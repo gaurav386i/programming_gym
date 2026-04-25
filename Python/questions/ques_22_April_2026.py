@@ -554,6 +554,27 @@ Reconstruct and return the queue.
 `[[4,0],[5,0],[2,2],[3,2],[1,4],[6,0]]`
 
 ---
+"""
+
+
+@print_return_value
+def reorder_queue(people: list[list[int]]) -> list[list[int]]:
+    """
+      sort by height descending
+      if heights are equal, sort by k ascending
+      insert each person at index k
+    """
+    if not people:
+        return []
+    people.sort(key=lambda x: (-x[0], x[1]))
+    res = []
+
+    for h, k in people:
+        res.insert(k, [h, k])
+    return res
+
+
+"""
 
 ## 12) Search a 2D Matrix II
 
@@ -587,6 +608,40 @@ This matrix has the following properties:
 `false`
 
 ---
+"""
+
+
+@print_return_value
+def search_sorted_matrix(mat: list[list[int]], target: int) -> bool:
+    if not mat or not mat[0]:
+        return False
+    R = len(mat)
+    C = len(mat[0])
+    r = 0
+    c = C - 1
+    while r < R and c >= 0:
+        if mat[r][c] == target:
+            return True
+        elif mat[r][c] < target:
+            r += 1
+        else:
+            c -= 1
+    return False
+
+
+search_sorted_matrix(
+    [
+        [1, 4, 7, 11, 15],
+        [2, 5, 8, 12, 19],
+        [3, 6, 9, 16, 22],
+        [10, 13, 14, 17, 24],
+        [18, 21, 23, 26, 30],
+    ],
+    5,
+)
+
+
+"""
 
 ## 13) Surrounded Regions
 
@@ -622,6 +677,99 @@ region.
 `[["X"]]`
 
 ---
+"""
+
+
+def surrounded_regions(mat: list[list[str]]) -> list[list[str]]:
+    if not mat or not mat[0]:
+        return []
+    row = len(mat)
+    cols = len(mat[0])
+
+    def dfs(r: int, c: int) -> None:
+        if r < 0 or r >= row or c < 0 or c >= cols or mat[r][c] != "O":
+            return
+        # mark cell safe
+        mat[r][c] == "S"
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
+
+    # mark all border cells safe:
+    for r in range(row):
+        if mat[r][0] == "O":
+            dfs(r, 0)
+        if mat[r][cols - 1] == "O":
+            dfs(r, cols - 1)
+    for c in range(cols):
+        if mat[0][c] == "O":
+            dfs(0, c)
+        if mat[row - 1][c] == "O":
+            dfs(row - 1, c)
+    for r in range(row):
+        for c in range(cols):
+            if mat[r][c] == "O":
+                mat[r][c] = "X"
+            if mat[r][c] == "S":
+                mat[r][c] = "O"
+    return mat
+
+
+@print_return_value
+def itr_surround_regions(mat: list[list[str]]) -> list[list[str]]:
+    if not mat or not mat[0]:
+        return []
+    rows = len(mat)
+    cols = len(mat[0])
+
+    # mark all border zeroes as safe
+    q = deque()
+
+    def add_if_o(r: int, c: int) -> None:
+        if mat[r][c] == "O":
+            mat[r][c] = "S"
+            q.append((r, c))
+
+    for r in range(rows):
+        add_if_o(r, 0)
+        add_if_o(r, cols - 1)
+    for c in range(cols):
+        add_if_o(0, c)
+        add_if_o(rows - 1, c)
+
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    while q:
+        r, c = q.popleft()
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+
+            if 0 <= nr < rows and 0 <= nc < cols and mat[nr][nc] == "O":
+                mat[nr][nc] == "S"
+                q.append((nr, nc))
+
+    for r in range(rows):
+        for c in range(cols):
+            if mat[r][c] == "O":
+                mat[r][c] = "X"
+            if mat[r][c] == "S":
+                mat[r][c] = "O"
+
+    return mat
+
+
+itr_surround_regions(
+    [
+        ["X", "X", "X", "X"],
+        ["X", "O", "O", "X"],
+        ["X", "X", "O", "X"],
+        ["X", "O", "X", "X"],
+    ]
+)
+
+
+"""
 
 ## 14) Populating Next Right Pointers in Each Node II
 
@@ -687,19 +835,21 @@ left endpoint.
 
 ---
 
-## Why this set helps
+"""
 
-This batch intentionally strengthens the thinner areas from earlier:
+def smallest_range_covering_elements_from_k_list(lists: list[list[int]]) -> list[int]:
+    if not lists:
+        return []
+    min_heap =[]
+    for i, list in enumerate(lists):
+        heappush(min_heap, (list[0], i, 0))
+    resp = []
+    while min_heap:
+        elm, l_idx, e_idx = heappop(min_heap)
+        resp.append(elm)        
+        if l_idx < len(lists) and e_idx + 1 < len(lists[l_idx]):
+            heappush(min_heap, (lists[l_idx][e_idx + 1], l_idx, e_idx + 1))
 
-* **k-way merge:** Q15
-* **matrix:** Q12, Q13
-* **queue:** Q2, Q14
-* **slow/fast pointers:** Q8
-* **string manipulation:** Q1, Q4, Q6
-* **greedy + sorting:** Q11
-* **stack beyond parentheses matching:** Q7
-
-If you want, I can turn these 15 into a **7-day practice schedule ordered
-from easiest to hardest**.
+    
 
 """

@@ -428,49 +428,50 @@ class BookingService:
 # ============================================================
 
 
-@dataclass
+import time
+
+
 class TokenBucket:
-    capacity: int
-    refill_rate_per_sec: float
-    tokens: float = field(init=False)
-    last_refill_ts: float = field(default_factory=time.time)
+    def __init__(self, capacity, refill_rate_per_sec):
+        self.capacity = capacity
+        self.refill_rate_per_sec = refill_rate_per_sec
+        self.tokens = capacity
+        self.last_refill_ts = time.time()
 
-    def __post_init__(self) -> None:
-        self.tokens = float(self.capacity)
+    def allow(self):
+        now = time.time()
 
-    def allow(self, now: float | None = None) -> bool:
-        if now is None:
-            now = time.time()
-
+        # Add tokens based on time passed
         elapsed = now - self.last_refill_ts
-        self.tokens = min(
-            self.capacity, self.tokens + elapsed * self.refill_rate_per_sec
-        )
+        new_tokens = elapsed * self.refill_rate_per_sec
+        self.tokens = min(self.capacity, self.tokens + new_tokens)
+
+        # Update last refill time
         self.last_refill_ts = now
 
+        # Allow request only if we have at least 1 token
         if self.tokens >= 1:
             self.tokens -= 1
             return True
+
         return False
 
 
 class RateLimiter:
-    """
-    Per-client token bucket limiter.
-    """
-
-    def __init__(self, capacity: int, refill_rate_per_sec: float):
+    def __init__(self, capacity, refill_rate_per_sec):
         self.capacity = capacity
         self.refill_rate_per_sec = refill_rate_per_sec
-        self.buckets: dict[str, TokenBucket] = {}
+        self.buckets = {}
 
-    def allow_request(self, client_id: str, now: float | None = None) -> bool:
+    def allow_request(self, client_id):
         if client_id not in self.buckets:
-            bucket = TokenBucket(self.capacity, self.refill_rate_per_sec)
-            if now is not None:
-                bucket.last_refill_ts = now
-            self.buckets[client_id] = bucket
-        return self.buckets[client_id].allow(now)
+            self.buckets[client_id] = TokenBucket(
+                self.capacity,
+                self.refill_rate_per_sec
+            )
+
+        bucket = self.buckets[client_id]
+        return bucket.allow()
 
 
 # ============================================================
