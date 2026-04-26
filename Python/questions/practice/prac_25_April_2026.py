@@ -1,5 +1,5 @@
 from collections import deque
-from prac_24_April_2026 import create_bt, create_ll
+from prac_24_April_2026 import create_ll
 
 """
 
@@ -10,7 +10,8 @@ from prac_24_April_2026 import create_bt, create_ll
 
 **Difficulty:** Easy
 
-Given two strings `s` and `t`, return `true` if `t` is an 
+Given two strings `s` and `t`, return `true` if `t` 
+is an 
 anagram of `s`, and `false` otherwise.
 
 ### Example 1
@@ -249,6 +250,8 @@ Add the two numbers and return the sum as a linked list.
 ---
 
 """
+
+
 def add_two_sorted_ll(l1: ListNode, l2: ListNode) -> ListNode:
     if not l1:
         return l2
@@ -550,6 +553,7 @@ def can_pass_courses(numCourse: int, prerequisites: list[list[int]]) -> bool:
                 q.append(nei)
     
     return completed == numCourse
+
 
 """
 
