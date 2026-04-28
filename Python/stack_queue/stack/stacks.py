@@ -1,6 +1,7 @@
 from collections import deque
 
 def daily_temperature_getting_warmer_in_days_naive(temps: list[int]) -> list[int]:
+    # [73, 74, 75, 71, 69, 72, 76, 73]
     if not temps:
         return []
     result = [0] * len(temps) 

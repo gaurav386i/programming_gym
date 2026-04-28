@@ -80,6 +80,7 @@ def reverse_k_nodes_of_linklist(head: ListNode, k: int) -> ListNode:
         count -= k
     return dummy.next
 
+
 def detect_cycle_ll(head: ListNode) -> ListNode | None:
     if not head:
         return head
@@ -89,8 +90,12 @@ def detect_cycle_ll(head: ListNode) -> ListNode | None:
         slow = slow.next
         fast = fast.next.next
         if slow == fast:
-            return slow.val
-    return None
+            break
+    slow = fast
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+    return slow
     
 
 

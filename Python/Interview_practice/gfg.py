@@ -10,4 +10,16 @@ def printGraph(V: int, edges: list[list[int]]) -> list[list[int]]:
     return list(graph.values())
 
 
-print(printGraph(5, [[0,1], [0,4], [4,1], [4,3], [1,3], [1,2], [3,2]]))
+def star_triangel(n):
+    # 10
+    k = n-1
+    for i in range(0, n):
+        for j in range(k):
+            print(end=" ")
+        k = k-1
+        for j in range(i+1):
+            print("* ", end="")
+        print(end="\n")
+
+
+star_triangel(10)

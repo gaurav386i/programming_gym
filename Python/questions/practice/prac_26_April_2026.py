@@ -150,7 +150,7 @@ def find_mid_ll(head: ListNode) -> ListNode:
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
-    return slow.val
+    return slow
 
 
 """
@@ -485,7 +485,6 @@ def connected_province(mat: list[list[int]]) -> int:
     return connected
 
 
-print(connected_province([[1, 0, 0], [0, 1, 0], [0, 0, 1]]))
 
 """
 
