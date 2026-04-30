@@ -141,9 +141,9 @@ class TokenBucket:
     def allow(self):
         now = time.time()
         elapsed_time = now - self.last_refill_ts
-        new_token = elapsed_time * self.refill_rate_per_sec
+        new_tokens = elapsed_time * self.refill_rate_per_sec
 
-        self.tokens = min(self.capacity, self.tokens + new_token)
+        self.tokens = min(self.capacity, self.tokens + new_tokens)
 
         self.last_refill_ts = now
 
