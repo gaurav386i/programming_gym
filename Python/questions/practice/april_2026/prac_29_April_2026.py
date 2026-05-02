@@ -1,7 +1,7 @@
 from heapq import heappush, heappop
 from collections import deque
 
-from prac_24_April_2026 import create_bt
+from Python.questions.practice.april_2026.prac_24_April_2026 import create_bt
 
 
 def print_output(func):
@@ -165,7 +165,6 @@ def daily_temperature(temperatures: list[int]) -> list[int]:
        
     return result
 
-daily_temperature([73,74,75,71,69,72,76,73])
 
 
 """
@@ -236,7 +235,6 @@ def validate_st_bst(root: TreeNode) -> bool:
 
 bt1 = create_bt([2,1,3])
 
-validate_st_bst(bt1)
 
 """
 
@@ -289,11 +287,6 @@ def k_pair_with_smallest_sum(nums1: list[int], nums2: list[int], kth: int) -> li
         
     
     return result
-
-k_pair_with_smallest_sum([1,7,11], [2,4,6], 3 )
-
-
-
         
     
 """
