@@ -74,3 +74,11 @@ def create_ll(arr: List[int]) -> Optional[ListNode]:
         curr = curr.next
 
     return head
+
+def print_linked_list(head):
+    temp = head
+    res = []
+    while temp:
+        res.append(str(temp.val))
+        temp = temp.next
+    print("-->".join(res))

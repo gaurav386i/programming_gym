@@ -850,6 +850,3 @@ def smallest_range_covering_elements_from_k_list(lists: list[list[int]]) -> list
         if l_idx < len(lists) and e_idx + 1 < len(lists[l_idx]):
             heappush(min_heap, (lists[l_idx][e_idx + 1], l_idx, e_idx + 1))
 
-    
-
-"""
