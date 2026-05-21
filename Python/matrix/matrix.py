@@ -76,6 +76,35 @@ def find_in_2d_matrix(mat: list[list[int]], target: int) -> bool:
     return False
 
 
+def diagonal_swap(matrix):
+    n = len(matrix)
+
+    for i in range(n):
+        for j in range(i + 1, n):   # only upper triangle
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+           
+
+
+def rotate_90_manual(matrix):
+    n = len(matrix)
+
+    # Step 1: diagonal swap
+    for i in range(n):
+        for j in range(i + 1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+    # Step 2: reverse each row (no built-in reverse)
+    for i in range(n):
+        left = 0
+        right = n - 1
+        while left < right:
+            matrix[i][left], matrix[i][right] = matrix[i][right], matrix[i][left]
+
+            left += 1
+            right -= 1
+
+
+
 
 if __name__ == "__main__":
     grid1 = [

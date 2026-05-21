@@ -254,16 +254,17 @@ def sort_char_by_freq(string: str) -> str:
     for k, v in ch_freq.items():
         heappush(max_heap, (-v, k))
 
-    result = ""
+    result = []
 
     while max_heap:
         val, ch = heappop(max_heap)
         while val < 0:
-            result += ch
+            result.append(ch)
             val += 1
-    return result
+    return "".join(result)
 
 
+sort_char_by_freq("cccaaa")
 """
 
 ## 6) Find All Anagrams in a String

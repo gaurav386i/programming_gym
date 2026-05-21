@@ -1,3 +1,5 @@
+from collections import deque
+
 # Sliding windows works like one element removed from windows and 
 # one element is added to the window always keep in mind
 #
@@ -105,7 +107,7 @@ def create_hash_str(st: str) -> dict:
 def permutation_in_string(s1: str, s2: str) -> bool:
     n1 = len(s1)
     n2 = len(s2)
-    if len(s1) > len(s2):
+    if n1 > n2:
         return False
     needed = create_hash_str(s1)
     window = create_hash_str(s2)
@@ -131,12 +133,65 @@ the characters of t. If no such window exists, return an empty string.
 Example:
 Input: s = "ADOBECODEBANC", t = "ABC"
 Output: "BANC"
+
 """
 
+def minimum_sub_string_window(s: str, t: str) -> str:
+    if len(s) < len(t):
+        return ""
+    need = create_hash_str(t)
+    window = {}
+    have = 0
+    need_count = len(need)
+    min_len = float("inf")
+    best_start = 0
+    left = 0
+    for right in range(len(s)):
+        ch = s[right]
+        window[ch] = window.get(ch, 0) + 1
+        if ch in need and window[ch] == need[ch]:
+            have += 1
+        while have == need_count:
+            if (right - left + 1) < min_len:
+                min_len = right - left + 1
+                best_start = left
+                
+            window[s[left]] -= 1
+            if s[left] in need and window[s[left]] < need[s[left]]:
+                have -= 1
+            left += 1
+    return s[best_start: best_start + min_len] if min_len != float("inf") else ""
+
+
+def rearrange_string(word: str) -> str:
+    if not word:
+        return ""
+    q = deque()
+    res = []
+    for w in word:
+        q.append(w)
+    count = 0
+    while q:
+        w = q.popleft()
+        if res and w == res[-1]:
+            count += 1
+            q.append(w)
+        elif count > 2:
+            return ""
+        else:
+            res.append(w)
+    arranged = "".join(res)
+    return arranged if len(arranged) == len(word) else ""
+
+
+
+    
+    
+
+
+        
+
 if __name__ == "__main__":
-    print(longest_substring_without_repeating_char("abcabcbb"))
+    # print(minimum_sub_string_window("ADOBECODEBANC", "ABC"))
+    print(rearrange_string("aaab"))
 
-    sum_arr = [3, 5, 2, 6, 19, 0, 25 , 2, 4, 13]
-    sum_ar1 = [1, 6, -5, -2, -8, 9, -10, 11, -13, 14]
-
-    print(longest_substring_without_repeated_chars("abcabcbb"))

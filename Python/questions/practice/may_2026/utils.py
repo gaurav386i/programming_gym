@@ -82,3 +82,27 @@ def print_linked_list(head):
         res.append(str(temp.val))
         temp = temp.next
     print("-->".join(res))
+
+
+def tree_to_list(root):
+    """
+    Returns a level-order list representation of the binary tree.
+    Prints 'No tree provided' if root is None.
+    """
+    if root is None:
+        print("No tree provided")
+        return None
+
+    result = []
+    queue = deque([root])
+
+    while queue:
+        current_node = queue.popleft()
+        result.append(current_node.key)
+
+        if current_node.left:
+            queue.append(current_node.left)
+        if current_node.right:
+            queue.append(current_node.right)
+            
+    print(result)

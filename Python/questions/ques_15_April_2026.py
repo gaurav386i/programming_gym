@@ -281,6 +281,9 @@ return any of them.
 
 **Input:**
 `words = ["wrt","wrf","er","ett","rftt"]`
+w--->r--->f
+     |
+     |----->t
 **Output:**
 `"wertf"`
 
