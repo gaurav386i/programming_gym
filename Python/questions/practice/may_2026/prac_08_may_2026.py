@@ -90,6 +90,8 @@ Core logic : start from src hop to neighbors and check if neighbor and keep calu
 
 """
 
+
+@print_output
 def cheapest_flight_with_most_k_stops(
         n: int, 
         flights: list[list[int]],
@@ -113,12 +115,11 @@ def cheapest_flight_with_most_k_stops(
         node = st.pop()
         price = 0
         l = 0
-        for nei in graph[node]:
-            if visited[nei] == False and l < k:
+        for nei, p in graph[node]:
+            if visited[nei] == False and l <= k:
                 
                 visited[nei] = True
                 l += 1
-                _, p = graph[nei]
                 price += p
                 st.append(nei)
                 if nei == dst:
@@ -135,29 +136,83 @@ def cheapest_flight_with_most_k_stops(
 **Topic:** Greedy
 **Difficulty:** Medium
 
-A **triplet** is an array of three integers. You are given a 2D integer array `triplets`, where `triplets[i] = [ai, bi, ci]` describes the `i-th` triplet. You are also given an integer array `target = [x, y, z]` that describes the target triplet you want to obtain.
+A **triplet** is an array of three integers. 
+You are given a 2D integer array `triplets`, 
+where `triplets[i] = [ai, bi, ci]` describes the `i-th` triplet. 
+You are also given an integer array `target = [x, y, z]` that 
+describes the target triplet you want to obtain.
 
-To obtain `target`, you may apply the following operation on `triplets` **any number of times** (possibly zero):
-- Choose two indices `i` and `j` (`i != j`) and update `triplets[j]` to become `[max(ai, aj), max(bi, bj), max(ci, cj)]`.
+To obtain `target`, you may apply the following operation on `triplets` 
+**any number of times** (possibly zero):
+- Choose two indices `i` and `j` (`i != j`) and update 
+`triplets[j]` to become `[max(ai, aj), max(bi, bj), max(ci, cj)]`.
 
-Return `true` if it is possible to obtain the `target` triplet `[x, y, z]` as an **element** of `triplets`, or `false` otherwise.
+Return `true` if it is possible to obtain the `target` 
+triplet `[x, y, z]` as an **element** of `triplets`, or `false` otherwise.
 
 ### Example
 **Input:** `triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]`
 **Output:** `true`
 
 ---
+requirements and assumptions 
+triples is an list of 3 int lists, target is list of 3 int 
+triples can be None, 
+
+Core logic :
+naive : for each triplet in list iterate over all list and check if max of 
+comparison will be equal
+to target .
+efficient : 
+
+
+
+
+
+"""
+
+
+@print_output
+def merge_triplets(
+        triplets: list[list[int]],
+        target: list[int]
+) -> int:
+    if not triplets or not target:
+        return False
+    matched = set()
+
+    for a, b, c in triplets:
+        if a > target[0] or b > target[1] or c > target[2]:
+            continue
+        if a == target[0]:
+            matched.add(0)
+        if b == target[1]:
+            matched.add(1)
+        if c == target[2]:
+            matched.add(2)
+    
+    return len(matched) == 3
+    
+
+
+"""
 
 ## 4) Time Based Key-Value Store
 **Topic:** Binary Search
 **Difficulty:** Medium
 
-Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.
+Design a time-based key-value data structure that can store 
+multiple values for the same key at different time stamps 
+and retrieve the key's value at a certain timestamp.
 
 Implement the `TimeMap` class:
 - `TimeMap()` Initializes the object of the data structure.
-- `void set(String key, String value, int timestamp)` Stores the key `key` with the value `value` at the given time `timestamp`.
-- `String get(String key, int timestamp)` Returns a value such that `set` was called previously, with `timestamp_prev <= timestamp`. If there are multiple such values, it returns the value associated with the largest `timestamp_prev`. If there are no values, it returns `""`.
+- `void set(String key, String value, int timestamp)` Stores the 
+key `key` with the value `value` at the given time `timestamp`.
+- `String get(String key, int timestamp)` Returns a value such 
+that `set` was called previously, with `timestamp_prev <= timestamp`. 
+If there are multiple such values, it returns the value associated with 
+the largest `timestamp_prev`. If there are no values, it returns `""`.
 
 ### Example
 **Input:** 
@@ -168,11 +223,48 @@ Implement the `TimeMap` class:
 
 ---
 
+
+
+
+"""
+
+class TimeMap:
+    def __init__(self):
+        self._store = {}
+
+    def set(self, key: str, value: str, timestamp: int):
+        if key not in self._store:
+            self._store[key] = []
+        self._store[key].append((value, timestamp))
+    
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self._store:
+            return ""
+        values = self._store.get(key)
+        result = ""
+        left = 0
+        right = len(values) - 1
+
+        while left <= right:
+            mid = (right + left) // 2
+            v, tm = values[mid]
+            if tm <= timestamp:
+                result = v
+                left = mid + 1
+            else:
+                right = mid - 1
+        return result
+
+
+
+"""
+
 ## 5) Evaluate Reverse Polish Notation
 **Topic:** Stack
 **Difficulty:** Medium
 
-You are given an array of strings `tokens` that represents an arithmetic expression in a Reverse Polish Notation.
+You are given an array of strings `tokens` that represents an arithmetic 
+expression in a Reverse Polish Notation.
 
 Evaluate the expression. Return *an integer that represents the value of the expression*.
 
@@ -188,34 +280,47 @@ Evaluate the expression. Return *an integer that represents the value of the exp
 **Output:** `9`
 **Explanation:** ((2 + 1) * 3) = 9
 
+
+requirements and assumptions:
+what about empty tokens or no tokens 
+
 ---
 """
 
-
-
-class TimeMap:
-    def __init__(self):
-        pass
-
-    def set(self, key: str, value: str, timestamp: int) -> None:
-        pass
-
-    def get(self, key: str, timestamp: int) -> str:
-        pass
-
+import operator
 
 @print_output
-def eval_rpn(tokens: list[str]) -> int:
-    pass
+def reverse_polish_notation(tokens: list[str]) -> int:
+    if not tokens:
+        return 0
+    op_map = {
+        "+": operator.add,
+        "-": operator.sub,
+        "*": operator.mul,
+        "/": lambda a, b: int(a / b),
+    }
+    st = []
+    
+    for token in tokens:
+        if token not in op_map:
+            st.append(int(token))
+        else:
+            b = st.pop()
+            a = st.pop()
+            result = op_map[token](a, b)
+            st.append(result)
+
+    return st[-1]
+
 
 
 if __name__ == "__main__":
     # 1) Binary Tree Maximum Path Sum
-    root = create_bt([-10,9,20,None,None,15,7])
-    max_path_sum(root)
+    # root = create_bt([-10,9,20,None,None,15,7])
+    # max_path_sum(root)
     
     # 2) Cheapest Flights
-    # find_cheapest_price(4, [[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]], 0, 3, 1)
+    # cheapest_flight_with_most_k_stops(4, [[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]], 0, 3, 1)
     
     # 3) Merge Triplets
     # merge_triplets([[2,5,3],[1,8,4],[1,7,5]], [2,7,5])
@@ -226,5 +331,5 @@ if __name__ == "__main__":
     # print(obj.get("foo", 1))
     
     # 5) Evaluate RPN
-    # eval_rpn(["2","1","+","3","*"])
+    # reverse_polish_notation(["2","1","+","3","*"])
     pass
